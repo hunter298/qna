@@ -1,0 +1,8 @@
+.container
+  .row
+    .col-12.col-md-9
+      p class="questions-header" Questions:
+    .col-12.col-md-3 = link_to 'Ask question', new_question_path, class: 'ask-button'
+
+
+  = render @questions

@@ -4,3 +4,25 @@
   border: 1px solid gray;
   padding: 20px;
 }
+
+.ask-button {
+  background-color: blue;
+  color: white;
+  font-size: large;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.questions-header {
+  font-size: xx-large;
+}
+
+.question-summary {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.question-asked {
+  color: gray;
+}

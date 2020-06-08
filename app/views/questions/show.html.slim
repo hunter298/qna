@@ -1,0 +1,27 @@
+.container
+  .row
+    .col
+      h2 = question.title
+  .row
+    .col
+      p class="question-asked"
+        = "Asked #{question.created_at}"
+
+  hr
+
+  .row
+    .col
+      h4 = question.body
+  .row
+    .col
+      h3 = "#{question.answers.count} Answers:"
+
+  - question.answers.each do |answer|
+    .row
+      .col-12
+        p = answer.body
+    hr
+
+
+
+  = render 'answers/form', answer: question.answers.new

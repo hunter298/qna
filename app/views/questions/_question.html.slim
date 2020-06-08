@@ -1,0 +1,5 @@
+.row.question-summary
+  .col-12.col-md-8
+    = link_to question.title, question_path(question)
+  .question-asked.col-12.col-md-4
+    = "asked #{question.created_at}"
