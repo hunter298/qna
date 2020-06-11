@@ -5,7 +5,6 @@ in order to terminate my user session
 I, as authorized user
 want to be able to sign out
 } do
-
   given(:user) { create(:user) }
 
   before { sign_in(user) }

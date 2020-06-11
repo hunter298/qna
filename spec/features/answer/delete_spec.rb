@@ -6,16 +6,17 @@ registered user
 should be able to delete answer, created by him
 } do
 
-  given(:users) { create_list(:user, 2) }
-  given(:question) { create(:question, user: users[0]) }
-  given!(:answer) { create(:answer, question: question, user: users[0]) }
-  given!(:other_answer) { create(:answer, question: question, user: users[1]) }
+  given(:user) { create(:user) }
+  given(:other_user) { create(:user) }
+  given(:question) { create(:question, user: user) }
+  given!(:answer) { create(:answer, question: question, user: user) }
+  given!(:other_answer) { create(:answer, question: question, user: other_user) }
 
 
   describe 'authorized user' do
     background do
 
-      sign_in(users[0])
+      sign_in(user)
       visit question_path(question)
     end
 
@@ -33,6 +34,6 @@ should be able to delete answer, created by him
   scenario 'tries to delete answer' do
     visit question_path(question)
 
-    expect(page).to_not have_content 'Delete'
+    expect(page).to_not have_link 'Delete'
   end
 end

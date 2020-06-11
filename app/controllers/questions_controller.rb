@@ -7,7 +7,6 @@ class QuestionsController < ApplicationController
   end
 
   def show
-
   end
 
   def new
@@ -36,7 +35,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question.destroy
+    question.destroy if current_user&.author_of?(question)
     redirect_to questions_path
   end
 

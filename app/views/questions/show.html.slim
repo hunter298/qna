@@ -16,12 +16,6 @@
     .col
       h3 = "#{question.answers.count} Answers:"
 
-  - question.answers.each do |answer|
-    .row
-      .col-12
-        p = answer.body
-        p = (link_to 'Delete', answer_path(answer), method: :delete) if answer.user == current_user
-    hr
-
+  = render question.answers.reload
 
   = render 'answers/form', answer: question.answers.new

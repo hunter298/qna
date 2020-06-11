@@ -10,25 +10,33 @@ should be able to create answer
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  describe 'authorized user' do
+  describe 'authenticated user' do
     background do
       sign_in(user)
       visit questions_path
       click_on question.title
     end
-    scenario 'tries to add answer' do
+
+    scenario 'tries to add answer with valid data' do
       fill_in 'answer_body', with: 'Some answer'
       click_on 'Create Answer'
 
       expect(page).to have_content 'Some answer'
     end
+
+    scenario 'tries to add answer with invalid data' do
+      click_on 'Create Answer'
+
+      expect(page).to have_content "Body can't be blank"
+    end
   end
 
-  describe 'unauthorized user' do
+  describe 'unauthenticated user' do
     background do
       visit questions_path
       click_on question.title
     end
+
     scenario 'tries to add answer' do
       fill_in 'answer_body', with: 'Some answer'
       click_on 'Create Answer'

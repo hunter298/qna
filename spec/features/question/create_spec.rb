@@ -33,13 +33,10 @@ i'd like to be able to create a question
     end
   end
 
-
   scenario 'unauthenticated user tries to create question' do
     visit questions_path
     click_on 'Ask question'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
-
-
 end

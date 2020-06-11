@@ -8,6 +8,7 @@ can sign up to be able to log in
   background do
     visit new_user_registration_path
   end
+
   context 'new user' do
     given(:user) { build(:user) }
     given(:user_invalid) { build(:user, :invalid)}
@@ -35,6 +36,7 @@ can sign up to be able to log in
 
   context 'already registered user' do
     given(:user) { create(:user) }
+
     scenario 'tries to sign up again' do
       fill_in 'Email', with: user.email
       fill_in 'Password', with: user.password

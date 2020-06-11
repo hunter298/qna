@@ -5,7 +5,6 @@ feature 'User can sign in', %q{
   I, as an unauthorized user
   want to be able to sign in
 } do
-
   given(:user) { create(:user) }
 
   background { visit new_user_session_path }

@@ -14,5 +14,4 @@ FactoryBot.define do
       password_confirmation { 'incorrect' }
     end
   end
-
 end
