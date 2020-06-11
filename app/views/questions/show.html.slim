@@ -20,8 +20,8 @@
     .row
       .col-12
         p = answer.body
+        p = (link_to 'Delete', answer_path(answer), method: :delete) if answer.user == current_user
     hr
-
 
 
   = render 'answers/form', answer: question.answers.new

@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  let(:user) { create(:user) }
+
   describe 'GET #new' do
+    before { login(user) }
     before { get :new, params: {question_id: create(:question)} }
 
     it 'renders new view' do
@@ -10,27 +13,67 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'with valid attributes' do
-      it 'save new answer to database' do
-        expect { post :create, params: {question_id: create(:question), answer: attributes_for(:answer)} }.to change(Answer, :count).by(1)
+    let(:question) { create(:question) }
+    context 'authorized user' do
+      before { login(user) }
+      context 'with valid attributes' do
+        it 'save new answer to database' do
+          expect { post :create, params: {question_id: question, answer: attributes_for(:answer)} }.to change(Answer, :count).by(1)
+        end
+
+        it 'redirect to question' do
+          post :create, params: {question_id: question, answer: attributes_for(:answer)}
+
+          expect(response).to redirect_to (assigns(:question))
+        end
       end
 
-      it 'redirect to question' do
-        post :create, params: {question_id: create(:question), answer: attributes_for(:answer)}
+      context 'with invalid attributes' do
+        it 'does not save answer to database' do
+          expect { post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)} }.to_not change(Answer, :count)
+        end
 
-        expect(response).to redirect_to (assigns(:question))
+        it 'renders new view' do
+          post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)}
+
+          expect(response).to render_template(:new)
+        end
       end
     end
 
-    context 'with invalid attributes' do
-      it 'does not save answer to database' do
-        expect { post :create, params: { question_id: create(:question), answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
+    context 'unauthorized user' do
+
+      it 'does not save any answer' do
+        expect { post :create, params: {question_id: question, answer: attributes_for(:answer)} }.to_not change(Answer, :count)
       end
 
-      it 'renders new view' do
-        post :create, params: { question_id: create(:question), answer: attributes_for(:answer, :invalid) }
+      it 'redirects to login page' do
+        post :create, params: {question_id: question, answer: attributes_for(:answer)}
 
-        expect(response).to render_template(:new)
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let(:question) { create(:question) }
+    let!(:answer) { create(:answer, question: question) }
+
+    context 'authorized user' do
+      before { login(user) }
+      it 'erases answer from database' do
+        expect { delete :destroy, params: {id: answer} }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question page' do
+        delete :destroy, params: {id: answer}
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context 'unauthorized user' do
+      it 'does not erase answer' do
+        expect { delete :destroy, params: {id: answer} }.to_not change(Answer, :count)
       end
     end
   end

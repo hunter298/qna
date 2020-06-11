@@ -1,7 +1,9 @@
 FactoryBot.define do
+
   sequence :title do |n|
     "Question #{n}"
   end
+
   factory :question do
     title
     body { "MyText" }
@@ -10,4 +12,5 @@ FactoryBot.define do
       title { nil }
     end
   end
+
 end
