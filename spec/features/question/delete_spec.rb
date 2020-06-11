@@ -10,12 +10,11 @@ should be able to delete question, created by him
   given!(:question) { create(:question, user: users[0]) }
   given!(:other_question) { create(:question, user: users[1]) }
 
-  describe 'authorized user' do
+  describe 'authenticated user' do
     background do
 
       sign_in(users[0])
       visit questions_path
-      save_and_open_page
     end
 
     scenario 'tries to delete own question' do
@@ -29,7 +28,7 @@ should be able to delete question, created by him
     end
   end
 
-  scenario 'tries to delete question' do
+  scenario 'unauthenticated user tries to delete question' do
     visit questions_path
 
     expect(page).to_not have_content 'Delete'

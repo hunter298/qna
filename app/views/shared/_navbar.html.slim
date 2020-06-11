@@ -1,3 +1,6 @@
 nav class="navbar navbar-expand-lg navbar-light bg-light"
   = link_to 'Q&A', root_path, class: 'navbar-brand'
-  = link_to 'Log out', destroy_user_session_path, class: 'nav-link', method: :delete
+  - if user_signed_in?
+    = link_to 'Log out', destroy_user_session_path, class: 'nav-link', method: :delete
+  - else
+    = link_to 'Log in', new_user_session_path, class: 'nav-link'

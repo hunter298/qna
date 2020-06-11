@@ -7,8 +7,8 @@ should be able to create answer
 } do
 
   given!(:user) { create(:user) }
-  given!(:question) { create(:question) }
-  given!(:answer) { create(:answer, question: question) }
+  given!(:question) { create(:question, user: user) }
+  given!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'authorized user' do
     background do

@@ -5,7 +5,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'GET #new' do
     before { login(user) }
-    before { get :new, params: {question_id: create(:question)} }
+    before { get :new, params: {question_id: create(:question, user: user)} }
 
     it 'renders new view' do
       expect(response).to render_template :new
@@ -13,7 +13,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:question) { create(:question) }
+    let(:question) { create(:question, user: user) }
     context 'authorized user' do
       before { login(user) }
       context 'with valid attributes' do
@@ -56,8 +56,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:question) { create(:question) }
-    let!(:answer) { create(:answer, question: question) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, question: question, user: user) }
 
     context 'authorized user' do
       before { login(user) }

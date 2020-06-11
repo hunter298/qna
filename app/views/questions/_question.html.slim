@@ -4,4 +4,4 @@
   .question-asked.col-12.col-md-4
     = "asked #{question.created_at}"
   .question-delete.col-12
-    = (link_to 'Delete', question_path(question), method: delete, class: 'text-danger') if question.user == current_user
+    = (link_to 'Delete', question_path(question), method: :delete, class: 'text-danger') if question.user == current_user
