@@ -35,8 +35,11 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question.destroy if current_user&.author_of?(question)
-    redirect_to questions_path
+    if current_user&.author_of?(question)
+      question.destroy
+      flash_message = { notice: 'Question deleted successfully'}
+    end
+    redirect_to questions_path, flash_message || { alert: "You're not authorized to delete this question"}
   end
 
   private

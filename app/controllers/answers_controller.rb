@@ -13,8 +13,11 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    answer.destroy if current_user&.author_of?(answer)
-    redirect_to question_path(answer.question)
+    if current_user&.author_of?(answer)
+      answer.destroy
+      flash_message = { alert: 'Answer deleted successfully' }
+    end
+    redirect_to question_path(answer.question), flash_message || { notice: "You're not authorized to delete this answer" }
   end
 
   private

@@ -1,7 +1,8 @@
-.row
-  .col-12
-    p = answer.body
-    - if current_user&.author_of?(answer)
-      p = (link_to 'Delete', answer_path(answer), method: :delete)
+- if answer.persisted?
+  .row
+    .col-12
+      p = answer.body
+      - if current_user&.author_of?(answer)
+        p = link_to 'Delete', answer_path(answer), method: :delete
 
-hr
+  hr
