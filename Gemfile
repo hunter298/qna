@@ -30,9 +30,6 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'slim-rails'
 
-gem 'bootstrap'
-gem 'jquery-rails'
-
 gem 'devise'
 
 group :development, :test do

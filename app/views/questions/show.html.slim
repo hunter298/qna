@@ -15,7 +15,7 @@
   .row
     .col
       h3 = "#{question.answers.count} Answers:"
-
-  = render question.answers
+  .answers
+    = render question.answers
 
   = render 'answers/form', answer: question.answers.new

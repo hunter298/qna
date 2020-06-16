@@ -17,14 +17,14 @@ should be able to create answer
       click_on question.title
     end
 
-    scenario 'tries to add answer with valid data' do
+    scenario 'tries to add answer with valid data', js: true do
       fill_in 'answer_body', with: 'Some answer'
       click_on 'Create Answer'
 
       expect(page).to have_content 'Some answer'
     end
 
-    scenario 'tries to add answer with invalid data' do
+    scenario 'tries to add answer with invalid data', js: true do
       click_on 'Create Answer'
 
       expect(page).to have_content "Body can't be blank"

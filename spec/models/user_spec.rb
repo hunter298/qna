@@ -12,6 +12,7 @@ RSpec.describe User, type: :model do
 
     it 'returns true if object is created by user' do
       expect(user).to be_author_of(question)
+    end
 
     it 'returns false if object is not created by user' do
       expect(user.author_of?(other_question)).to be_falsey

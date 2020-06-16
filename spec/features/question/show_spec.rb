@@ -25,7 +25,7 @@ should can view the question along with given answers
     end
   end
 
-  scenario 'user tries to add answer from question page' do
+  scenario 'user tries to add answer from question page', js: true do
     fill_in 'answer_body', with: 'Some answer'
     click_on 'Create Answer'
 
