@@ -1,13 +1,13 @@
 - if answer.persisted?
-  .row
+  .row id="answer-#{answer.id}"
     .col-12
       p = answer.body
       - if current_user&.author_of?(answer)
-        p = link_to 'Delete', answer_path(answer), method: :delete
+        p = link_to 'Delete', answer_path(answer), method: :delete, data: { remote: true }, class: 'delete-answer'
         - if user_signed_in?
           p=link_to 'Edit', '#', class: "edit-answer-link", data: { answer_id: answer.id }
       = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |form|
         = form.text_area :body
         = form.submit 'Save'
 
-  hr
+      hr

@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate!
 
   def create
     @answer = question.answers.new(answer_params)
@@ -9,9 +9,7 @@ class AnswersController < ApplicationController
   def destroy
     if current_user&.author_of?(answer)
       answer.destroy
-      flash_message = { alert: 'Answer deleted successfully' }
     end
-    redirect_to question_path(answer.question), flash_message || { notice: "You're not authorized to delete this answer" }
   end
 
   def update
@@ -35,5 +33,11 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body)
+  end
+
+  def authenticate!
+    return true if user_signed_in?
+
+    redirect_to new_user_session_path, alert: 'You need to sign in or sign up before continuing.'
   end
 end

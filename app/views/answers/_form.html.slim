@@ -1,5 +1,5 @@
 = form_with model: [question, answer], class: 'new-answer' do |form|
-  .form-group.row
+  .form-group.row id="new_answer_form"
     .col-12.form-answer
       .answer-errors
         = render 'shared/errors', resource: @answer

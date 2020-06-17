@@ -37,10 +37,11 @@ should be able to create answer
       click_on question.title
     end
 
-    scenario 'tries to add answer' do
-      fill_in 'answer_body', with: 'Some answer'
-      click_on 'Create Answer'
-
+    scenario 'tries to add answer', js: true do
+      within '.new-answer' do
+        fill_in 'answer_body', with: 'Some answer'
+        click_on 'Create Answer'
+      end
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
     end
   end

@@ -1,7 +1,10 @@
 .container
   .row
-    .col
-      h2 = question.title
+    .col-12.col-md-9
+      h2 class="question-title" = question.title
+    .col-12.col-md-3
+      - if question.user_id == current_user&.id
+        = link_to 'Edit question', '#', class: 'ask-button edit-question'
   .row
     .col
       p class="question-asked"
@@ -11,7 +14,14 @@
 
   .row
     .col
-      h4 = question.body
+      h4 class="question-body" = question.body
+      .question-errors
+      = form_with model: question, class: 'hidden question-edit-form' do |form|
+        = form.label :title
+        = form.text_field :title
+        = form.label :body
+        = form.text_area :body
+        = form.submit
   .row
     .col
       h3 = "#{question.answers.count} Answers:"
