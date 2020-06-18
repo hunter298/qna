@@ -55,12 +55,12 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'author of answer' do
         it 'erases answer from database' do
-          expect { delete :destroy, params: {id: answer} }.to change(Answer, :count).by(-1)
+          expect { delete :destroy, params: {id: answer}, format: :js }.to change(Answer, :count).by(-1)
         end
 
         it 'redirects to question page' do
-          delete :destroy, params: {id: answer}
-          expect(response).to redirect_to question_path(question)
+          delete :destroy, params: {id: answer}, format: :js
+          expect(response).to render_template :destroy
         end
       end
 
@@ -68,12 +68,12 @@ RSpec.describe AnswersController, type: :controller do
         let!(:other_answer) { create(:answer, question: question, user: create(:user)) }
 
         it 'does not erase answer from database' do
-          expect { delete :destroy, params: {id: other_answer} }.to_not change(Answer, :count)
+          expect { delete :destroy, params: {id: other_answer}, format: :js }.to_not change(Answer, :count)
         end
 
         it 'redirects to question page' do
-          delete :destroy, params: {id: answer}
-          expect(response).to redirect_to question_path(question)
+          delete :destroy, params: {id: answer}, format: :js
+          expect(response).to render_template :destroy
         end
       end
     end
@@ -88,35 +88,49 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #update' do
     let!(:answer) { create(:answer, question: question, user: user) }
 
-    context 'with valid attributes' do
-      before do
-        sign_in(user)
-        patch :update, params: { id: answer, answer: { body: 'new body'} }, format: :js
+    describe 'author of answer' do
+      context 'tries to edit answer with valid attributes' do
+        before do
+          sign_in(user)
+          patch :update, params: {id: answer, answer: {body: 'new body'}}, format: :js
+        end
+
+        it 'changes answer attributes' do
+          answer.reload
+          expect(answer.body).to eq 'new body'
+        end
+
+        it 'renders update view' do
+          expect(response).to render_template :update
+        end
       end
 
-      it 'chages answer attributes' do
-        answer.reload
-        expect(answer.body).to eq 'new body'
-      end
+      context 'tries to edit answer with invalid attributes' do
+        it 'does not change answer attributes' do
+          sign_in(user)
 
-      it 'renders update view' do
-        expect(response).to render_template :update
+          expect do
+            patch :update, params: {id: answer, answer: attributes_for(:answer, :invalid)}, format: :js
+          end.to_not change(answer, :body)
+        end
+
+        it 'renders update view' do
+          sign_in(user)
+          patch :update, params: {id: answer, answer: attributes_for(:answer, :invalid)}, format: :js
+
+          expect(response).to render_template :update
+        end
       end
     end
 
-    context 'with invalid attributes' do
-      it 'does not change answer attributes' do
-        sign_in(user)
+    describe 'not an author of answer' do
+      scenario 'tries to edit answer' do
+        sign_in(create(:user))
 
-        expect do
-          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
-        end.to_not change(answer, :body)
-      end
-      it 'renders update view' do
-        sign_in(user)
-        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        patch :update, params: {id: answer, answer: {body: 'new body'}}, format: :js
+        answer.reload
 
-        expect(response).to render_template :update
+        expect(answer.body).to_not eq 'new body'
       end
     end
   end

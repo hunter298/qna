@@ -1,13 +1,25 @@
 - if answer.persisted?
   .row id="answer-#{answer.id}"
-    .col-12
+    .col-12.col-md-10
       p = answer.body
+    .col-12.col-md-2
+      - if current_user&.author_of?(answer.question)
+        = link_to 'Best', best_answer_path(answer),
+                method: :post, data: { remote: true },
+                class: answer.best ? 'btn btn-success' : 'btn btn-secondary'
+    .col-12
       - if current_user&.author_of?(answer)
-        p = link_to 'Delete', answer_path(answer), method: :delete, data: { remote: true }, class: 'delete-answer'
-        - if user_signed_in?
-          p=link_to 'Edit', '#', class: "edit-answer-link", data: { answer_id: answer.id }
-      = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |form|
-        = form.text_area :body
-        = form.submit 'Save'
+        = link_to 'Delete', answer_path(answer),
+                method: :delete,
+                data: { remote: true },
+                class: 'delete-answer'
+      - if current_user&.author_of?(answer)
+        = " | "
+        = link_to 'Edit', '#',
+                class: "edit-answer-link",
+                data: { answer_id: answer.id }
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |form|
+      = form.text_area :body
+      = form.submit 'Save'
 
-      hr
+  hr

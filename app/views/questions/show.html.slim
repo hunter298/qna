@@ -26,6 +26,7 @@
     .col
       h3 = "#{question.answers.count} Answers:"
   .answers
-    = render question.answers
+    = render question.answers.where(best: true)
+    = render question.answers.where(best: false)
 
   = render 'answers/form', answer: question.answers.new
