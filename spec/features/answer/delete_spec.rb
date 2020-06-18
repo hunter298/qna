@@ -20,7 +20,7 @@ should be able to delete answer, created by him
       visit question_path(question)
     end
 
-    scenario 'tries to delete own answer' do
+    scenario 'tries to delete own answer', js: true do
       click_link 'Delete', href: answer_path(answer)
 
       expect(page).to_not have_content answer.body
