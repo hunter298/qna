@@ -5,9 +5,11 @@ class Answer < ApplicationRecord
   validates :body, presence: true
 
   def is_best!
-    unless best
-      question.answers.where(best: true).update_all(best: false)
-      update(best: true)
+    Answer.transaction do
+      unless best
+        question.answers.find_by(best: true)&.update!(best: false)
+        update!(best: true)
+      end
     end
   end
 end

@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :authenticate!
+  before_action :authenticate_user!, except: %i[best]
 
   def create
     @answer = question.answers.new(answer_params)
@@ -21,9 +21,9 @@ class AnswersController < ApplicationController
 
   def best
     @answer = Answer.find(params[:id])
-    # if current_user&.author_of?(@answer.question)
+    if current_user&.author_of?(@answer.question)
       @answer.is_best!
-    # end
+    end
   end
 
   private

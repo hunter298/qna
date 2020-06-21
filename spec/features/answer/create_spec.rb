@@ -42,7 +42,7 @@ should be able to create answer
         fill_in 'answer_body', with: 'Some answer'
         click_on 'Create Answer'
       end
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to_not have_content 'Some answer'
     end
   end
 end

@@ -9,7 +9,7 @@ RSpec.describe Answer, type: :model do
   describe "Answer#is_best!" do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
-    let!(:answers) { create_list(:answer, 3, question: question, user: user) }
+    let!(:answers) { create_list(:answer, 2, question: question, user: user) }
 
     it 'makes answer best' do
       answers[0].is_best!
@@ -21,8 +21,15 @@ RSpec.describe Answer, type: :model do
       answers.each { |answer| answer.is_best! }
 
       expect(answers[0].reload.best).to be_falsey
-      expect(answers[1].reload.best).to be_falsey
-      expect(answers[2].reload.best).to be_truthy
+    end
+
+
+    context 'question with few answers' do
+      it 'should have only one best answer' do
+        answers[0].is_best!
+        answers[1].is_best!
+        expect(question.answers.select { |answer| answer.best }.count).to eq 1
+      end
     end
   end
 end

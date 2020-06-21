@@ -51,4 +51,6 @@ I'd like to be able to flag best answer
 
     expect(page).to_not have_content 'Best'
   end
+
+
 end

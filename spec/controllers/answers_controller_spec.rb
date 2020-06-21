@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:user) { create(:user) }
+  let!(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
 
   describe 'POST #create' do
@@ -131,6 +131,40 @@ RSpec.describe AnswersController, type: :controller do
         answer.reload
 
         expect(answer.body).to_not eq 'new body'
+      end
+    end
+  end
+
+  describe 'POST #Best' do
+    let!(:answer) { create(:answer, question: question, user: user) }
+    let!(:other_answer) { create(:answer, question: question, user: user, best: true) }
+    let!(:other_user) { create(:user) }
+
+    context 'author of question tries to flag answer as best one' do
+      it 'should change best attribute of answer to true', js: true do
+        sign_in(user)
+
+        post :best, params: {id: answer}, format: :js
+
+        expect(answer.reload.best).to eq true
+      end
+
+      it 'should change best attribute of other answer to false' do
+        sign_in(user)
+
+        post :best, params: { id: answer }, format: :js
+
+        expect(other_answer.reload.best).to eq false
+      end
+    end
+
+    context 'not author of question tries to flag answer as best one' do
+      it 'should not change best attribute of answer' do
+        sign_in(other_user)
+
+        post :best, params: { id: answer }, format: :js
+
+        expect(answer.best).to eq false
       end
     end
   end
