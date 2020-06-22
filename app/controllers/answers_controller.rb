@@ -2,8 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @answer = question.answers.create(answer_params)
-    @answer.update(user: current_user)
+    @answer = question.answers.create(answer_params.merge(user: current_user))
   end
 
   def destroy
