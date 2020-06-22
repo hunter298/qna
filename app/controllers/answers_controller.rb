@@ -1,8 +1,8 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: %i[best]
+  before_action :authenticate_user!
 
   def create
-    @answer = question.answers.new(answer_params)
+    @answer = question.answers.create(answer_params)
     @answer.update(user: current_user)
   end
 
@@ -42,11 +42,5 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body)
-  end
-
-  def authenticate!
-    return true if user_signed_in?
-
-    redirect_to new_user_session_path, alert: 'You need to sign in or sign up before continuing.'
   end
 end

@@ -27,7 +27,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    question.update(question_params)
+    question.update(question_params) if current_user&.author_of?(question)
   end
 
   def destroy

@@ -146,7 +146,7 @@ RSpec.describe AnswersController, type: :controller do
 
         post :best, params: {id: answer}, format: :js
 
-        expect(answer.reload.best).to eq true
+        expect(answer.reload).to be_best
       end
 
       it 'should change best attribute of other answer to false' do

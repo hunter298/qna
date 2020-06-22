@@ -3,7 +3,7 @@
     .col-12.col-md-9
       h2 class="question-title" = question.title
     .col-12.col-md-3
-      - if question.user_id == current_user&.id
+      - if current_user&.author_of?(question)
         = link_to 'Edit question', '#', class: 'ask-button edit-question'
   .row
     .col
