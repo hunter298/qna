@@ -2,6 +2,9 @@
   .row id="answer-#{answer.id}"
     .col-12.col-md-10
       p = answer.body
+    .col-12
+      - answer.files.each do |file|
+        p = link_to file.filename.to_s, url_for(file)
     .col-12.col-md-2
       - if current_user&.author_of?(answer.question)
         = link_to 'Best', best_answer_path(answer),

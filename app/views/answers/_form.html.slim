@@ -4,4 +4,5 @@
       .answer-errors
         = render 'shared/errors', resource: @answer
       p = form.text_area :body, rows: 6, class: 'form-control'
+      p = form.file_field :files, multiple: true
   p = form.submit class: 'btn btn-primary'

@@ -15,6 +15,9 @@
   .row
     .col
       h4 class="question-body" = question.body
+      - if question.files.attached?
+        - question.files.each do |file|
+          p = link_to file.filename.to_s, url_for(file)
       .question-errors
       = form_with model: question, class: 'hidden question-edit-form' do |form|
         = form.label :title

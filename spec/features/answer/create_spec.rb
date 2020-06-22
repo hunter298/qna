@@ -29,6 +29,16 @@ should be able to create answer
 
       expect(page).to have_content "Body can't be blank"
     end
+
+    scenario 'add answer with few files attached', js: true do
+      fill_in 'answer_body', with: 'Some answer'
+      attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+      click_on 'Create Answer'
+
+      expect(page).to have_content 'rails_helper.rb'
+      expect(page).to have_content 'spec_helper.rb'
+    end
   end
 
   describe 'unauthenticated user' do
