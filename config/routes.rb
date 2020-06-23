@@ -4,7 +4,11 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :answers, shallow: true, only: %i[create destroy update] do
-      post :best, on: :member
+      member do
+        post :best
+        delete :delete_file_attached
+      end
     end
+    delete :delete_file_attached, on: :member
   end
 end

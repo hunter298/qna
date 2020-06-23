@@ -154,4 +154,38 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #Delete_file_attached' do
+    before do
+      question.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", "w+"), filename: 'test-file.txt')
+    end
+
+    context 'author of question tries to delete attached file' do
+      before do
+        sign_in(user)
+
+        delete :delete_file_attached, params: {id: question.files.last.id}, format: :js
+      end
+
+      it 'should purge attached file' do
+        expect(question.files.reload).to be_empty
+      end
+
+      it 'should render delete_file_attached view' do
+        expect(response).to render_template 'shared/_delete_file_attached'
+      end
+    end
+
+    context 'other user tries to delete attached file' do
+      before do
+        sign_in(create(:user))
+
+        delete :delete_file_attached, params: {id: question.files.last.id}, format: :js
+      end
+
+      it 'should not purge file' do
+        expect(question.files.reload).to_not be_empty
+      end
+    end
+  end
 end

@@ -1,4 +1,4 @@
-.container
+.container.question
   .row
     .col-12.col-md-9
       h2 class="question-title" = question.title
@@ -15,16 +15,18 @@
   .row
     .col
       h4 class="question-body" = question.body
-      - if question.files.attached?
-        - question.files.each do |file|
-          p = link_to file.filename.to_s, url_for(file)
+      .question-files
+        - if question.files.attached?
+          = render 'shared/files', resource: question
       .question-errors
       = form_with model: question, class: 'hidden question-edit-form' do |form|
         = form.label :title
         = form.text_field :title
         = form.label :body
         = form.text_area :body
+        = form.file_field :files, multiple: true
         = form.submit
+
   .row
     .col
       h3 = "#{question.answers.count} Answers:"

@@ -27,7 +27,13 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    question.update(question_params) if current_user&.author_of?(question)
+    if current_user&.author_of?(question)
+      question.update(params.require(:question).permit(:title, :body))
+      if params[:question][:files]
+        question.files.attach(params[:question][:files])
+        question.save
+      end
+    end
   end
 
   def destroy

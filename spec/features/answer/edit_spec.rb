@@ -56,5 +56,20 @@ I'd like to be able to edit my answer
         expect(page).to_not have_content 'Edit'
       end
     end
+
+    scenario 'tries to add files during editing', js: true do
+      sign_in(user)
+      visit question_path(question)
+
+      click_on 'Edit'
+
+      within('.answers') do
+        fill_in 'answer_body', with: 'corrected answer'
+        attach_file 'answer_files', ["#{Rails.root}/spec/rails_helper.rb"]
+        click_on 'Save'
+      end
+      expect(page).to have_link 'rails_helper.rb'
+    end
+
   end
 end

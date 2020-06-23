@@ -1,0 +1,7 @@
+- if resource.files.attached?
+  - resource.files.each do |file|
+    .file id="file-#{file.id}"
+      = link_to file.filename.to_s, url_for(file)
+      - if current_user&.author_of?(file.record)
+        = '  |  '
+        = link_to 'Delete file', delete_file_attached_question_path(file), method: :delete, data: { remote: true }

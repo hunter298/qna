@@ -47,6 +47,22 @@ i'd like to be able to edit it
 
       expect(page).to_not have_content 'Edit question'
     end
+
+    scenario 'tries to add new files during editing', js: true do
+      sign_in(user)
+      visit question_path(question)
+
+      click_on 'Edit question'
+      fill_in 'Title', with: 'New title'
+      fill_in 'Body', with: 'New body'
+      attach_file 'question_files',
+                  ["#{Rails.root}/spec/support/controller_helpers.rb", "#{Rails.root}/spec/support/feature_helpers.rb"]
+
+      click_on 'Update Question'
+
+      expect(page).to have_link 'controller_helpers.rb'
+      expect(page).to have_link 'feature_helpers.rb'
+    end
   end
 
 

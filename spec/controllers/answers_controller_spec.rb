@@ -152,7 +152,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'should change best attribute of other answer to false' do
         sign_in(user)
 
-        post :best, params: { id: answer }, format: :js
+        post :best, params: {id: answer}, format: :js
 
         expect(other_answer.reload.best).to eq false
       end
@@ -162,9 +162,45 @@ RSpec.describe AnswersController, type: :controller do
       it 'should not change best attribute of answer' do
         sign_in(other_user)
 
-        post :best, params: { id: answer }, format: :js
+        post :best, params: {id: answer}, format: :js
 
         expect(answer.best).to eq false
+      end
+    end
+  end
+
+  describe 'DELETE #Delete_file_attached' do
+    let!(:answer) { create(:answer, question: question, user: user) }
+
+    before do
+      answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", "w+"), filename: 'test-file.txt')
+    end
+
+    context 'author of answer tries to delete attached file' do
+      before do
+        sign_in(user)
+
+        delete :delete_file_attached, params: {id: answer.files.last.id}, format: :js
+      end
+
+      it 'should purge attached file' do
+        expect(answer.files.reload).to be_empty
+      end
+
+      it 'should render delete_file_attached view' do
+        expect(response).to render_template 'shared/_delete_file_attached'
+      end
+    end
+
+    context 'other user tries to delete attached file' do
+      before do
+        sign_in(create(:user))
+
+        delete :delete_file_attached, params: {id: answer.files.last.id}, format: :js
+      end
+
+      it 'should not purge file' do
+        expect(answer.files.reload).to_not be_empty
       end
     end
   end
