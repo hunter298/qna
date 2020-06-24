@@ -11,6 +11,6 @@
     .form-group.row
       p = form.label :files, class: 'col-12 col-md-2 col-form-label'
       .col-md-10.col-12
-        = form.file_field :files, multiple: true
+        = form.file_field :files, multiple: true, direct_upload: true
 
   p = form.submit class: 'btn btn-primary'
