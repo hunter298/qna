@@ -29,19 +29,17 @@ class QuestionsController < ApplicationController
   def update
     if current_user&.author_of?(question)
       question.update(params.require(:question).permit(:title, :body))
-      if params[:question][:files]
-        question.files.attach(params[:question][:files])
-        question.save
-      end
+      question.files.attach(params[:question][:files])
+      question.save
     end
   end
 
   def destroy
     if current_user&.author_of?(question)
       question.destroy
-      flash_message = { notice: 'Question deleted successfully'}
+      flash_message = {notice: 'Question deleted successfully'}
     end
-    redirect_to questions_path, flash_message || { alert: "You're not authorized to delete this question"}
+    redirect_to questions_path, flash_message || {alert: "You're not authorized to delete this question"}
   end
 
   private

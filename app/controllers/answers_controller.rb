@@ -14,10 +14,8 @@ class AnswersController < ApplicationController
   def update
     if current_user&.author_of?(answer)
       answer.update(params.require(:answer).permit(:body))
-      if params[:answer][:files]
-        answer.files.attach(params[:answer][:files])
-        answer.save!
-      end
+      answer.files.attach(params[:answer][:files])
+      answer.save
     end
   end
 
