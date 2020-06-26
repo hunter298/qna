@@ -1,8 +1,18 @@
-= form_with model: [question, answer], class: 'new-answer' do |form|
+= form_with model: [question, @answer], class: 'new-answer' do |form|
   .form-group.row id="new_answer_form"
     .col-12.form-answer
       .answer-errors
         = render 'shared/errors', resource: @answer
       p = form.text_area :body, rows: 6, class: 'form-control'
       p = form.file_field :files, multiple: true
+      .links-form
+        p Links:
+        p
+          = form.fields_for :links do |l|
+            p
+              = l.label :name, 'Link name'
+              = l.text_field :name
+            p
+              = l.label :url, 'Url'
+              = l.text_field :url
   p = form.submit class: 'btn btn-primary'
