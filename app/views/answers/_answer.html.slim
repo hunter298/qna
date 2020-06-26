@@ -8,6 +8,11 @@
           = link_to 'Best', best_answer_path(answer),
                   method: :post, data: { remote: true },
                   class: answer.best ? 'btn btn-success' : 'btn btn-secondary'
+      .answer-links.col-12
+        p Links
+        ul
+          - answer.links.each do |link|
+            li = link_to link.name, link.url
       .col-12.answer-files
         = render 'shared/files', resource: answer
       .col-12

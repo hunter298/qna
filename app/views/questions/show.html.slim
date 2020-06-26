@@ -18,6 +18,12 @@
       .question-files
         - if question.files.attached?
           = render 'shared/files', resource: question
+  .links
+    p Links
+    ul
+      - question.links.each do |link|
+        li = link_to link.name, link.url
+
       .question-errors
       = form_with model: question, class: 'hidden question-edit-form' do |form|
         = form.label :title
