@@ -22,7 +22,7 @@
     p Links
     ul
       - question.links.each do |link|
-        li = link_to link.name, link.url
+        li = link_to link.name, link.url, target: "_blank"
 
       .question-errors
       = form_with model: question, class: 'hidden question-edit-form' do |form|
