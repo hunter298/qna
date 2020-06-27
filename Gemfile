@@ -32,7 +32,11 @@ gem 'slim-rails'
 
 gem 'devise'
 
+# for direct uploads with google cloud storage
 gem "google-cloud-storage", "~> 1.8", require: false
+
+# nested forms, dynamic upload
+gem 'cocoon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1,26 +1,25 @@
 = form_with model: question, local: true do |form|
   .form-question
     .form-group.row
-      p = form.label :title, class: 'col-12 col-md-2 col-form-label'
-      .col-md-10.col-12
+      .col-12.col-md-1
+        = form.label :title, class: 'col-form-label'
+      .col-12.col-md-11
         = form.text_field :title, class: 'form-control', placeholder: 'Question title'
     .form-group.row
-      p = form.label :body, class: 'col-12 col-md-2 col-form-label'
-      .col-md-10.col-12
+      .col-12.col-md-1
+        = form.label :body, class: 'col-form-label'
+      .col-12.col-md-11
         = form.text_area :body, class: 'form-control', rows: 3, placeholder: 'Ask question'
     .form-group.row
-      p = form.label :files, class: 'col-12 col-md-2 col-form-label'
-      .col-md-10.col-12
+      .col-12.col-md-1
+        = form.label :files, class: 'col-form-label'
+      .col-12.col-md-11
         = form.file_field :files, multiple: true, direct_upload: true
-    .links-form
-      p Links:
-      p
-        = form.fields_for :links do |l|
-          p
-            = l.label :name, 'Link name'
-            = l.text_field :name
-          p
-            = l.label :url, 'Url'
-            = l.text_field :url
+    p Links:
+    #links
+        = form.fields_for :links do |link|
+          = render 'link_fields', f: link
+        .links
+          = link_to_add_association 'add link', form, :links
 
   p = form.submit class: 'btn btn-primary'
