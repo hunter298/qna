@@ -13,7 +13,7 @@ class AnswersController < ApplicationController
 
   def update
     if current_user&.author_of?(answer)
-      answer.update(params.require(:answer).permit(:body))
+      answer.update(params.require(:answer).permit(:body, links_attributes: [:id, :name, :url, :_destroy]))
       answer.files.attach(params[:answer][:files])
       answer.save
     end

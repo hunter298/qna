@@ -8,11 +8,10 @@
           = link_to 'Best', best_answer_path(answer),
                   method: :post, data: { remote: true },
                   class: answer.best ? 'btn btn-success' : 'btn btn-secondary'
-      .answer-links.col-12
+      .links.col-12
         p Links
         ul
-          - answer.links.each do |link|
-            li = link_to link.name, link.url
+          = render answer.links
       .col-12.answer-files
         = render 'shared/files', resource: answer
       .col-12
@@ -28,8 +27,14 @@
                   class: "edit-answer-link",
                   data: { answer_id: answer.id }
         = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |form|
-          = form.text_field :body
-          = form.file_field :files, multiple: true
-          = form.submit 'Save'
+          p = form.text_field :body
+          p = form.file_field :files, multiple: true
+          p Links:
+          #links
+            = form.fields_for :links do |link|
+              = render 'link_fields', f: link
+            .links
+              = link_to_add_association 'add link', form, :links
+          p = form.submit 'Save'
       .col-12
         hr

@@ -39,3 +39,5 @@ yarn-debug.log*
 .idea
 
 /config/secrets/*
+
+.env

@@ -18,20 +18,46 @@
       .question-files
         - if question.files.attached?
           = render 'shared/files', resource: question
-  .links
+  .question-links
     p Links
     ul
-      - question.links.each do |link|
-        li = link_to link.name, link.url, target: "_blank"
+      = render question.links
 
-      .question-errors
-      = form_with model: question, class: 'hidden question-edit-form' do |form|
-        = form.label :title
-        = form.text_field :title
-        = form.label :body
-        = form.text_area :body
-        = form.file_field :files, multiple: true
-        = form.submit
+
+  .question-errors
+  = form_with model: question, class: 'hidden question-edit-form' do |form|
+    .form-question
+      .form-group.row
+        .col-12.col-md-1
+          = form.label :title, class: 'col-form-label'
+        .col-12.col-md-11
+          = form.text_field :title, class: 'form-control', placeholder: 'Question title'
+      .form-group.row
+        .col-12.col-md-1
+          = form.label :body, class: 'col-form-label'
+        .col-12.col-md-11
+          = form.text_area :body, class: 'form-control', rows: 3, placeholder: 'Ask question'
+      .form-group.row
+        .col-12.col-md-1
+          = form.label :files, class: 'col-form-label'
+        .col-12.col-md-11
+          = form.file_field :files, multiple: true, direct_upload: true
+      p Links:
+      #links
+        = form.fields_for :links do |link|
+          = render 'link_fields', f: link
+        .links
+          = link_to_add_association 'add link', form, :links
+
+      = form.submit class: 'btn btn-primary'
+
+
+      / = form.label :title
+        / = form.text_field :title
+        / = form.label :body
+        / = form.text_area :body
+        / = form.file_field :files, multiple: true
+        / = form.submit
 
   .row
     .col
