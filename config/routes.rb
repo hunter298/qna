@@ -11,4 +11,6 @@ Rails.application.routes.draw do
     end
     delete :delete_file_attached, on: :member
   end
+
+  resources :badges, only: %i[index]
 end

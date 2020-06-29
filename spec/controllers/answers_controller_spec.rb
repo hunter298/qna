@@ -137,8 +137,9 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #Best' do
     let!(:answer) { create(:answer, question: question, user: user) }
-    let!(:other_answer) { create(:answer, question: question, user: user, best: true) }
     let!(:other_user) { create(:user) }
+    let!(:other_answer) { create(:answer, question: question, user: other_user, best: true) }
+    let!(:badge) { Badge.create(name: 'test', question: question) }
 
     context 'author of question tries to flag answer as best one' do
       it 'should change best attribute of answer to true', js: true do
@@ -155,6 +156,14 @@ RSpec.describe AnswersController, type: :controller do
         post :best, params: {id: answer}, format: :js
 
         expect(other_answer.reload.best).to eq false
+      end
+
+      it 'should give question badge to answer author' do
+        sign_in(user)
+
+        post :best, params: {id: other_answer}, format: :js
+
+        expect(other_user.badges).to include badge
       end
     end
 

@@ -1,0 +1,7 @@
+h2 Your badges:
+ul class="list-group"
+  - current_user.badges.each do |badge|
+    li class="list-group-item"
+      - if badge.icon.attached?
+        = image_tag(rails_blob_path(badge.icon, disposition: "attachment"), width: 50, height: 50)
+      = badge.name
