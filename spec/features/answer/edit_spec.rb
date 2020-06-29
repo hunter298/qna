@@ -18,10 +18,12 @@ I'd like to be able to edit my answer
   end
 
   describe 'authenticated user' do
-    scenario 'edits his answer', js: true do
+    background do
       sign_in(user)
       visit question_path(question)
+    end
 
+    scenario 'edits his answer', js: true do
       click_on 'Edit'
 
       within('.answers') do
@@ -35,9 +37,6 @@ I'd like to be able to edit my answer
     end
 
     scenario 'edits his answer with errors', js: true do
-      sign_in(user)
-      visit question_path(question)
-
       click_on 'Edit'
 
       within('.answers') do
@@ -49,6 +48,7 @@ I'd like to be able to edit my answer
     end
 
     scenario "tries to edit some other user answer" do
+      click_on 'Log out'
       sign_in(other_user)
       visit question_path(question)
 
@@ -58,9 +58,6 @@ I'd like to be able to edit my answer
     end
 
     scenario 'tries to add files during editing', js: true do
-      sign_in(user)
-      visit question_path(question)
-
       click_on 'Edit'
 
       within('.answers') do
@@ -69,6 +66,38 @@ I'd like to be able to edit my answer
         click_on 'Save'
       end
       expect(page).to have_link 'rails_helper.rb'
+    end
+
+    scenario 'tries to add links during editing', js: true do
+      click_on 'Edit'
+      within('.answers') do
+        click_on 'add link'
+
+        fill_in 'Link name', with: 'Test link name'
+        fill_in 'Url', with: 'http://test.link/'
+
+        click_on 'Save'
+      end
+
+      expect(page).to have_link 'Test link name', href: 'http://test.link/'
+    end
+
+    scenario 'tries to delete link from question', js: true do
+      within('.answers') do
+        click_on 'Edit'
+        click_on 'add link'
+        fill_in 'Link name', with: 'Test link name'
+        fill_in 'Url', with: 'http://test.link/'
+        click_on 'Save'
+      end
+
+      within('.answers') do
+        click_on 'Edit'
+        click_on 'remove link'
+        click_on 'Save'
+      end
+
+      expect(page).to_not have_link 'test', href: 'http://test.link'
     end
 
   end
