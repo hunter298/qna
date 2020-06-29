@@ -15,11 +15,26 @@
         = form.label :files, class: 'col-form-label'
       .col-12.col-md-11
         = form.file_field :files, multiple: true, direct_upload: true
-    p Links:
-    #links
+    .bg-light.p-3.my-2
+      p Links:
+      #links
         = form.fields_for :links do |link|
           = render 'link_fields', f: link
         .links
           = link_to_add_association 'add link', form, :links
+    .bg-light.p-3.my-2
+      p Badge:
+      = form.fields_for :badge do |badge|
+        .form-group.row
+          .col-12.col-md-2
+            = badge.label :name, 'Badge name', class: 'col-form-label'
+          .col-12.col-md-10
+            = badge.text_field :name, class: 'form-control'
+        .input-group
+          .input-group-prepend
+            span class="input-group-text" Icon
+          .custom-file
+            = badge.file_field :icon, class: 'custom-file-input'
+            = badge.label :icon, 'Choose', class: 'custom-file-label'
 
   p = form.submit class: 'btn btn-primary'

@@ -21,8 +21,12 @@ class AnswersController < ApplicationController
 
   def best
     @answer = Answer.find(params[:id])
-    if current_user&.author_of?(@answer.question)
+    @question = @answer.question
+    if current_user&.author_of?(@question)
       @answer.is_best!
+      if @question.badge
+        @answer.user.badges.push(@question.badge)
+      end
     end
   end
 

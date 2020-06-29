@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
 
   def new
     question.links.build
+    Badge.create(question: question)
   end
 
   def edit
@@ -54,6 +55,8 @@ class QuestionsController < ApplicationController
   helper_method :question
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [], links_attributes: [:id, :name, :url, :_destroy])
+    params.require(:question).permit(:title, :body, files: [],
+                                     links_attributes: [:id, :name, :url, :_destroy],
+                                     badge_attributes: [:name, :icon])
   end
 end
