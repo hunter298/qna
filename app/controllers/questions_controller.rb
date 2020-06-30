@@ -13,7 +13,7 @@ class QuestionsController < ApplicationController
 
   def new
     question.links.build
-    Badge.create(question: question)
+    Badge.new(question: question)
   end
 
   def edit
@@ -32,9 +32,8 @@ class QuestionsController < ApplicationController
 
   def update
     if current_user&.author_of?(question)
-      question.update(params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy]))
+      question.update(question_update_params)
       question.files.attach(params[:question][:files]) if params[:question][:files]
-      question.save
     end
   end
 
@@ -58,5 +57,9 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(:title, :body, files: [],
                                      links_attributes: [:id, :name, :url, :_destroy],
                                      badge_attributes: [:name, :icon])
+  end
+
+  def question_update_params
+    params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy])
   end
 end

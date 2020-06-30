@@ -1,7 +1,7 @@
 class Badge < ApplicationRecord
   belongs_to :question
   has_many :achievements, dependent: :destroy
-  has_many :users, through: :achievements
+  belongs_to :user, optional: true
 
   validates :name, presence: true
 

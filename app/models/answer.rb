@@ -14,6 +14,9 @@ class Answer < ApplicationRecord
       unless best
         question.answers.find_by(best: true)&.update!(best: false)
         update!(best: true)
+        if question.badge
+          user.badges.push(question.badge)
+        end
       end
     end
   end
