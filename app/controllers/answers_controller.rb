@@ -13,9 +13,8 @@ class AnswersController < ApplicationController
 
   def update
     if current_user&.author_of?(answer)
-      answer.update(params.require(:answer).permit(:body, links_attributes: [:id, :name, :url, :_destroy]))
+      answer.update(answer_update_params)
       answer.files.attach(params[:answer][:files])
-      answer.save
     end
   end
 
@@ -24,9 +23,6 @@ class AnswersController < ApplicationController
     @question = @answer.question
     if current_user&.author_of?(@question)
       @answer.is_best!
-      if @question.badge
-        @answer.user.badges.push(@question.badge)
-      end
     end
   end
 
@@ -46,5 +42,9 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url])
+  end
+
+  def answer_update_params
+    params.require(:answer).permit(:body, links_attributes: [:id, :name, :url, :_destroy])
   end
 end

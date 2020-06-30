@@ -139,6 +139,7 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question, user: user) }
     let!(:other_user) { create(:user) }
     let!(:other_answer) { create(:answer, question: question, user: other_user, best: true) }
+    let!(:third_answer) { create(:answer, question: question, user: other_user) }
     let!(:badge) { Badge.create(name: 'test', question: question) }
 
     context 'author of question tries to flag answer as best one' do
@@ -161,7 +162,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'should give question badge to answer author' do
         sign_in(user)
 
-        post :best, params: {id: other_answer}, format: :js
+        post :best, params: {id: third_answer}, format: :js
 
         expect(other_user.badges).to include badge
       end
