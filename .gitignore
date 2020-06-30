@@ -41,3 +41,5 @@ yarn-debug.log*
 /config/secrets/*
 
 .env
+
+.zshrc
