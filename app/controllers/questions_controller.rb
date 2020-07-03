@@ -32,7 +32,7 @@ class QuestionsController < ApplicationController
 
   def update
     if current_user&.author_of?(question)
-      question.update(question_update_params)
+      question.update(question_params)
       question.files.attach(params[:question][:files]) if params[:question][:files]
     end
   end
@@ -54,12 +54,12 @@ class QuestionsController < ApplicationController
   helper_method :question
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [],
-                                     links_attributes: [:id, :name, :url, :_destroy],
-                                     badge_attributes: [:name, :icon])
-  end
-
-  def question_update_params
-    params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy])
+    if action_name == 'create'
+      params.require(:question).permit(:title, :body, files: [],
+                                       links_attributes: [:id, :name, :url, :_destroy],
+                                       badge_attributes: [:name, :icon])
+    else
+      params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy])
+    end
   end
 end
