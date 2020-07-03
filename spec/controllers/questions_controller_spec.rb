@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
 
@@ -194,6 +193,13 @@ RSpec.describe QuestionsController, type: :controller do
       it 'should not purge file' do
         expect(question.files.reload).to_not be_empty
       end
+    end
+  end
+
+  describe "PATCH #upvote" do
+    before { patch :upvote, params: {id: question} }
+    it 'increases rating by 1' do
+      expect(question.reload.rating).to eq 1
     end
   end
 end

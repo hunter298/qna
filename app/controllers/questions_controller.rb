@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  include Rated
 
   before_action :authenticate_user!, except: %i[index show]
 

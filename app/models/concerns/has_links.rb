@@ -1,5 +1,6 @@
 module HasLinks
   extend ActiveSupport::Concern
+
   included do
     has_many :links, dependent: :destroy, as: :linkable, inverse_of: :linkable
 

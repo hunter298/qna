@@ -1,5 +1,6 @@
 class Question < ApplicationRecord
   include HasLinks
+  include Ratable
 
   has_many :answers, dependent: :destroy
   has_one :badge, dependent: :destroy
