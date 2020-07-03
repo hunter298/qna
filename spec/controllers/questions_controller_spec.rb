@@ -196,4 +196,12 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH#Upvote' do
+    before { patch :upvote, params: { id: question } }
+
+    it 'should increase question rating by 1' do
+      expect(question.reload.rating).to eq 1
+    end
+  end
 end

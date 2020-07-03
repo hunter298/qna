@@ -15,4 +15,13 @@ RSpec.describe Question, type: :model do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
+  describe "Question#upvote" do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+
+    it 'should increase rating by 1' do
+      expect { question.upvote }.to change(question, :rating).by(1)
+    end
+  end
+
 end

@@ -5,6 +5,8 @@
     .col-12.col-md-3
       - if current_user&.author_of?(question)
         = link_to 'Edit question', '#', class: 'ask-button edit-question'
+      - else
+        = link_to 'Upvote', upvote_question_path, class: 'btn btn-primary', method: :patch
   .row
     .col
       p class="question-asked"
