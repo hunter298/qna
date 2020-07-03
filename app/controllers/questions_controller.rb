@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
-  include Rated
+  # include Rated
+
 
   before_action :authenticate_user!, except: %i[index show]
 
@@ -44,6 +45,16 @@ class QuestionsController < ApplicationController
       flash_message = {notice: 'Question deleted successfully'}
     end
     redirect_to questions_path, flash_message || {alert: "You're not authorized to delete this question"}
+  end
+
+  def upvote
+    question.upvote
+    render plain: question.rating
+  end
+
+  def downvote
+    question.downvote
+    render plain: question.rating
   end
 
   private

@@ -11,9 +11,15 @@ feature 'user can vote for best questions' do
     end
 
     scenario 'tries to upvote question' do
-      click_on 'Upvote'
+      click_on "upvote-question-#{question.id}"
 
       expect(question.reload.rating).to eq 1
+    end
+
+    scenario 'tries to downvote question' do
+      click_on "downvote-question-#{question.id}"
+
+      expect(question.reload.rating).to eq -1
     end
   end
 end

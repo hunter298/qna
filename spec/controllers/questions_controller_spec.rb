@@ -198,10 +198,15 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH#Upvote' do
-    before { patch :upvote, params: { id: question } }
-
+    let(:some_user) { create(:user) }
+    let!(:some_question) { create(:question, user: some_user) }
+    before do
+      login(user)
+    end
     it 'should increase question rating by 1' do
-      expect(question.reload.rating).to eq 1
+      expect {
+        patch :upvote, params: { id: some_question }
+      }.to change(some_question, :rating)
     end
   end
 end
