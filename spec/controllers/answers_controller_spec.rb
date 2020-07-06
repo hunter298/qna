@@ -215,4 +215,70 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #Upvote' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, question: question, user: create(:user)) }
+    let!(:own_answer) { create(:answer, question: question, user: user) }
+
+    before do
+      login(user)
+    end
+
+    it 'should increase question rating by 1' do
+      expect do
+        patch :upvote, params: {id: answer}, format: :json
+        answer.reload
+      end.to change(answer, :rating).by(1)
+    end
+
+    it 'should cancel first vote after second apply' do
+      expect do
+        patch :upvote, params: {id: answer}, format: :json
+        patch :upvote, params: {id: answer}, format: :json
+        answer.reload
+      end.to_not change(answer, :rating)
+    end
+
+    it 'should not increase own question rating' do
+      expect do
+        patch :upvote, params: {id: own_answer}, format: :json
+        own_answer.reload
+      end.to_not change(own_answer, :rating)
+    end
+  end
+
+  describe 'PATCH #Downvote' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, question: question, user: create(:user)) }
+    let!(:own_answer) { create(:answer, question: question, user: user) }
+
+    before do
+      login(user)
+    end
+
+    it 'should decrease question rating by 1' do
+      expect do
+        patch :downvote, params: {id: answer}, format: :json
+        answer.reload
+      end.to change(answer, :rating).by(-1)
+    end
+
+    it 'should cancel first vote after second apply' do
+      expect do
+        patch :downvote, params: {id: answer}, format: :json
+        patch :downvote, params: {id: answer}, format: :json
+        answer.reload
+      end.to_not change(answer, :rating)
+    end
+
+    it 'should not decrease own question rating' do
+      expect do
+        patch :downvote, params: {id: own_answer}, format: :json
+        own_answer.reload
+      end.to_not change(own_answer, :rating)
+    end
+  end
+
 end

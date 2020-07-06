@@ -4,6 +4,7 @@ RSpec.describe Question, type: :model do
   it { should belong_to :user }
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
+  it { should have_many(:votes).dependent(:destroy) }
   it { should have_one(:badge).dependent(:destroy) }
 
   it { should accept_nested_attributes_for :links }
@@ -20,8 +21,31 @@ RSpec.describe Question, type: :model do
     let(:question) { create(:question, user: user) }
 
     it 'should increase rating by 1' do
-      expect { question.upvote }.to change(question, :rating).by(1)
+      expect { question.upvote(user) }.to change(question, :rating).by(1)
+    end
+
+    it 'should not change rating after two applying' do
+      expect do
+        question.upvote(user)
+        question.upvote(user)
+      end.to_not change(question, :rating)
     end
   end
 
+  describe "Question#downvote" do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+
+    it 'should decrease rating by 1' do
+      expect { question.downvote(user) }.to change(question, :rating).by(-1)
+    end
+
+    it 'should not change rating after two applying' do
+      expect do
+        question.downvote(user)
+        question.downvote(user)
+      end.to_not change(question, :rating)
+    end
+  end
 end
+

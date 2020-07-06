@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!
 
   def create
@@ -25,6 +27,29 @@ class AnswersController < ApplicationController
       @answer.is_best!
     end
   end
+
+  # def upvote
+  #   respond_to do |format|
+  #     format.json do
+  #       unless current_user&.author_of?(answer)
+  #         answer.upvote(current_user)
+  #         render json: answer.rating
+  #       end
+  #     end
+  #   end
+  # end
+  #
+  # def downvote
+  #   respond_to do |format|
+  #     format.json do
+  #       unless current_user&.author_of?(answer)
+  #         answer.downvote(current_user)
+  #         render json: answer.rating
+  #       end
+  #     end
+  #   end
+  #
+  # end
 
   private
 

@@ -1,7 +1,30 @@
 .answer
   - if answer.persisted?
     .row id="answer-#{answer.id}"
-      .col-12.col-md-10
+      .rating.col-12.col-md-2
+        table align="right"
+          tr
+            - unless current_user&.author_of?(answer)
+              td
+                h2 class="answer-upvote"
+                  = link_to "\u2B06", upvote_answer_path(answer),
+                          class: "upvote-answer",
+                          method: :patch,
+                          remote: true,
+                          data: {format: :json, answer_id: answer.id}
+          tr
+            td align="center"
+              = content_tag :h2, answer.rating, class: "answer-#{answer.id}-rating-counter"
+          tr
+            - unless current_user&.author_of?(answer)
+              td
+                h2 class="answer-downvote"
+                  = link_to "\u2B07", downvote_answer_path(answer),
+                          class: "downvote-answer",
+                          method: :patch,
+                          remote: true,
+                          data: {type: :json, answer_id: answer.id}
+      .col-12.col-md-8
         p = answer.body
       .col-12.col-md-2
         - if current_user&.author_of?(answer.question)

@@ -197,16 +197,65 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATCH#Upvote' do
+  describe 'PATCH #Upvote' do
     let(:some_user) { create(:user) }
-    let!(:some_question) { create(:question, user: some_user) }
+    let!(:own_question) { create(:question, user: some_user) }
+    let!(:other_question) { create(:question, user: create(:user)) }
     before do
-      login(user)
+      login(some_user)
     end
+
     it 'should increase question rating by 1' do
-      expect {
-        patch :upvote, params: { id: some_question }
-      }.to change(some_question, :rating)
+      expect do
+        patch :upvote, params: {id: other_question}, format: :json
+        other_question.reload
+      end.to change(other_question, :rating).by(1)
+    end
+
+    it 'should cancel first vote after second apply' do
+      expect do
+        patch :upvote, params: {id: other_question}, format: :json
+        patch :upvote, params: {id: other_question}, format: :json
+        other_question.reload
+      end.to_not change(other_question, :rating)
+    end
+
+    it 'should not increase own question rating' do
+      expect do
+        patch :upvote, params: {id: own_question}, format: :json
+        own_question.reload
+      end.to_not change(own_question, :rating)
+    end
+  end
+
+  describe 'PATCH #Downvote' do
+    let(:some_user) { create(:user) }
+    let!(:own_question) { create(:question, user: some_user) }
+    let!(:other_question) { create(:question, user: create(:user)) }
+    before do
+      login(some_user)
+    end
+
+    it 'should decrease question rating by 1' do
+      expect do
+        patch :downvote, params: {id: other_question}, format: :json
+        other_question.reload
+      end.to change(other_question, :rating).by(-1)
+    end
+
+    it 'should cancel first vote after second apply' do
+      expect do
+        patch :downvote, params: {id: other_question}, format: :json
+        patch :downvote, params: {id: other_question}, format: :json
+        other_question.reload
+      end.to_not change(other_question, :rating)
+    end
+
+    it 'should not decrease own question rating' do
+      expect do
+        patch :downvote, params: {id: own_question}, format: :json
+        own_question.reload
+      end.to_not change(own_question, :rating)
     end
   end
 end

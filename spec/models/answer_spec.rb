@@ -39,4 +39,38 @@ RSpec.describe Answer, type: :model do
       end
     end
   end
+
+  describe "Answer#upvote" do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, question: question, user: user) }
+
+    it 'should increase rating by 1' do
+      expect { answer.upvote(user) }.to change(answer, :rating).by(1)
+    end
+
+    it 'should not change rating after two applying' do
+      expect do
+        answer.upvote(user)
+        answer.upvote(user)
+      end.to_not change(answer, :rating)
+    end
+  end
+
+  describe "Question#downvote" do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, question: question, user: user) }
+
+    it 'should decrease rating by 1' do
+      expect { answer.downvote(user) }.to change(answer, :rating).by(-1)
+    end
+
+    it 'should not change rating after two applying' do
+      expect do
+        answer.downvote(user)
+        answer.downvote(user)
+      end.to_not change(answer, :rating)
+    end
+  end
 end

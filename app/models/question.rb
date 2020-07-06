@@ -1,5 +1,6 @@
 class Question < ApplicationRecord
-  # include Ratable
+  include Votable
+
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable, inverse_of: :linkable
   has_one :badge, dependent: :destroy
@@ -11,14 +12,4 @@ class Question < ApplicationRecord
   has_many_attached :files
 
   validates :title, :body, presence: true
-
-  def upvote
-    self.rating += 1
-    save
-  end
-
-  def downvote
-    self.rating -= 1
-    save
-  end
 end

@@ -2,14 +2,15 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'questions#index'
 
-  # concern :ratable do
-  #   member do
-  #     patch :upvote
-  #   end
-  # end
+  concern :votable do
+    member do
+      patch :upvote
+      patch :downvote
+    end
+  end
 
-  resources :questions do
-    resources :answers, shallow: true, only: %i[create destroy update] do
+  resources :questions, concerns: [:votable] do
+    resources :answers, shallow: true, only: %i[create destroy update], concerns: [:votable] do
       member do
         post :best
         delete :delete_file_attached
@@ -18,8 +19,6 @@ Rails.application.routes.draw do
 
     member do
       delete :delete_file_attached
-      patch :upvote
-      patch :downvote
     end
 
   end

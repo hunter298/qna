@@ -1,6 +1,5 @@
 class QuestionsController < ApplicationController
-  # include Rated
-
+  include Voted
 
   before_action :authenticate_user!, except: %i[index show]
 
@@ -47,15 +46,27 @@ class QuestionsController < ApplicationController
     redirect_to questions_path, flash_message || {alert: "You're not authorized to delete this question"}
   end
 
-  def upvote
-    question.upvote
-    render plain: question.rating
-  end
-
-  def downvote
-    question.downvote
-    render plain: question.rating
-  end
+  # def upvote
+  #   respond_to do |format|
+  #     format.json do
+  #       unless current_user&.author_of?(question)
+  #         question.upvote(current_user)
+  #         render json: question.rating
+  #       end
+  #     end
+  #   end
+  # end
+  #
+  # def downvote
+  #   respond_to do |format|
+  #     format.json do
+  #       unless current_user&.author_of?(question)
+  #         question.downvote(current_user)
+  #         render json: question.rating
+  #       end
+  #     end
+  #   end
+  # end
 
   private
 
