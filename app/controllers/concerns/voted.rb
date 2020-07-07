@@ -7,9 +7,11 @@ module Voted
   def upvote
     respond_to do |format|
       format.json do
-        unless current_user&.author_of?(@ratable)
-          @ratable.upvote(current_user)
-          render json: @ratable.rating
+        unless current_user&.author_of?(@votable)
+          @votable.upvote(current_user)
+          render json: @votable.votes.sum(:useful)
+        else
+          head 403
         end
       end
     end
@@ -18,13 +20,14 @@ module Voted
   def downvote
     respond_to do |format|
       format.json do
-        unless current_user&.author_of?(@ratable)
-          @ratable.downvote(current_user)
-          render json: @ratable.rating
+        unless current_user&.author_of?(@votable)
+          @votable.downvote(current_user)
+          render json: @votable.votes.sum(:useful)
+        else
+          head 403
         end
       end
     end
-
   end
 
   private
@@ -34,6 +37,6 @@ module Voted
   end
 
   def set_ratable
-    @ratable = model_klass.find(params[:id])
+    @votable = model_klass.find(params[:id])
   end
 end

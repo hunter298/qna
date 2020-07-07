@@ -34,7 +34,7 @@
                         data: {format: :json}
         tr
           td align="center"
-            h2 class="question-rating-counter" = question.rating
+            h2 class="question-rating-counter" = question.votes.sum(:useful)
         tr
           - unless current_user&.author_of?(question)
             td

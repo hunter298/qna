@@ -206,25 +206,25 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'should increase question rating by 1' do
-      expect do
         patch :upvote, params: {id: other_question}, format: :json
         other_question.reload
-      end.to change(other_question, :rating).by(1)
+
+        expect(other_question.votes.sum(:useful)).to eq 1
     end
 
     it 'should cancel first vote after second apply' do
-      expect do
         patch :upvote, params: {id: other_question}, format: :json
         patch :upvote, params: {id: other_question}, format: :json
         other_question.reload
-      end.to_not change(other_question, :rating)
+
+        expect(other_question.votes.sum(:useful)).to eq 0
     end
 
     it 'should not increase own question rating' do
-      expect do
         patch :upvote, params: {id: own_question}, format: :json
         own_question.reload
-      end.to_not change(own_question, :rating)
+
+        expect(own_question.votes.sum(:useful)).to eq 0
     end
   end
 
@@ -237,25 +237,25 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'should decrease question rating by 1' do
-      expect do
         patch :downvote, params: {id: other_question}, format: :json
         other_question.reload
-      end.to change(other_question, :rating).by(-1)
+
+        expect(other_question.votes.sum(:useful)).to eq -1
     end
 
     it 'should cancel first vote after second apply' do
-      expect do
         patch :downvote, params: {id: other_question}, format: :json
         patch :downvote, params: {id: other_question}, format: :json
         other_question.reload
-      end.to_not change(other_question, :rating)
+
+        expect(other_question.votes.sum(:useful)).to eq 0
     end
 
     it 'should not decrease own question rating' do
-      expect do
         patch :downvote, params: {id: own_question}, format: :json
         own_question.reload
-      end.to_not change(own_question, :rating)
+
+        expect(own_question.votes.sum(:useful)).to eq 0
     end
   end
 end

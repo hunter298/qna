@@ -13,7 +13,7 @@ RSpec.describe Answer, type: :model do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
-  describe "Answer#is_best!" do
+  describe "#is_best!" do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
     let!(:answers) { create_list(:answer, 2, question: question, user: user) }
@@ -40,37 +40,41 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  describe "Answer#upvote" do
+  describe "#upvote" do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
     let!(:answer) { create(:answer, question: question, user: user) }
 
     it 'should increase rating by 1' do
-      expect { answer.upvote(user) }.to change(answer, :rating).by(1)
+      answer.upvote(user)
+
+      expect(answer.rating).to eq 1
     end
 
     it 'should not change rating after two applying' do
-      expect do
         answer.upvote(user)
         answer.upvote(user)
-      end.to_not change(answer, :rating)
+
+        expect(answer.rating).to eq 0
     end
   end
 
-  describe "Question#downvote" do
+  describe "#downvote" do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
     let!(:answer) { create(:answer, question: question, user: user) }
 
     it 'should decrease rating by 1' do
-      expect { answer.downvote(user) }.to change(answer, :rating).by(-1)
+      answer.downvote(user)
+
+      expect(answer.rating).to eq -1
     end
 
     it 'should not change rating after two applying' do
-      expect do
         answer.downvote(user)
         answer.downvote(user)
-      end.to_not change(answer, :rating)
+
+        expect(answer.rating).to eq 0
     end
   end
 end

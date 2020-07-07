@@ -5,39 +5,31 @@ module Votable
     has_many :votes, as: :votable, dependent: :destroy
 
     def upvote(user)
-      if vote = Vote.find_by(user: user, votable: self)
-        if vote.useful
+      if vote = votes.find_by(user: user)
+        if vote.useful == 1
           vote.destroy
-          self.rating -= 1
-          save
         else
-          vote.update(useful: true)
-          self.rating += 2
-          save
+          vote.update(useful: 1)
         end
       else
-        Vote.create(user: user, votable: self, useful: true)
-        self.rating += 1
-        save
+        votes.create(user: user, useful: 1)
       end
     end
 
     def downvote(user)
-      if vote = Vote.find_by(user: user, votable: self)
-        if !vote.useful
+      if vote = votes.find_by(user: user)
+        if vote.useful == -1
           vote.destroy
-          self.rating += 1
-          save
         else
-          vote.update(useful: false)
-          self.rating -= 2
-          save
+          vote.update(useful: -1)
         end
       else
-        Vote.create(user: user, votable: self, useful: false)
-        self.rating -= 1
-        save
+        votes.create(user: user, useful: -1)
       end
+    end
+
+    def rating
+      votes.sum(:useful)
     end
   end
 end

@@ -43,7 +43,6 @@ ActiveRecord::Schema.define(version: 2020_07_05_214734) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
     t.boolean "best", default: false
-    t.integer "rating", default: 0, null: false
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["user_id"], name: "index_answers_on_user_id"
   end
@@ -74,7 +73,6 @@ ActiveRecord::Schema.define(version: 2020_07_05_214734) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
-    t.integer "rating", default: 0, null: false
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
@@ -94,7 +92,7 @@ ActiveRecord::Schema.define(version: 2020_07_05_214734) do
     t.bigint "user_id", null: false
     t.string "votable_type"
     t.bigint "votable_id"
-    t.boolean "useful"
+    t.integer "useful"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_votes_on_user_id"

@@ -226,25 +226,25 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'should increase question rating by 1' do
-      expect do
         patch :upvote, params: {id: answer}, format: :json
         answer.reload
-      end.to change(answer, :rating).by(1)
+
+        expect(answer.votes.sum(:useful)).to eq 1
     end
 
     it 'should cancel first vote after second apply' do
-      expect do
         patch :upvote, params: {id: answer}, format: :json
         patch :upvote, params: {id: answer}, format: :json
         answer.reload
-      end.to_not change(answer, :rating)
+
+        expect(answer.votes.sum(:useful)).to eq 0
     end
 
     it 'should not increase own question rating' do
-      expect do
         patch :upvote, params: {id: own_answer}, format: :json
         own_answer.reload
-      end.to_not change(own_answer, :rating)
+
+        expect(answer.votes.sum(:useful)).to eq 0
     end
   end
 
@@ -259,25 +259,25 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'should decrease question rating by 1' do
-      expect do
         patch :downvote, params: {id: answer}, format: :json
         answer.reload
-      end.to change(answer, :rating).by(-1)
+
+        expect(answer.votes.sum(:useful)).to eq -1
     end
 
     it 'should cancel first vote after second apply' do
-      expect do
         patch :downvote, params: {id: answer}, format: :json
         patch :downvote, params: {id: answer}, format: :json
         answer.reload
-      end.to_not change(answer, :rating)
+
+        expect(answer.votes.sum(:useful)).to eq 0
     end
 
     it 'should not decrease own question rating' do
-      expect do
         patch :downvote, params: {id: own_answer}, format: :json
         own_answer.reload
-      end.to_not change(own_answer, :rating)
+
+        expect(answer.votes.sum(:useful)).to eq 0
     end
   end
 

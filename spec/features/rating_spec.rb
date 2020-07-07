@@ -15,7 +15,7 @@ feature 'user can vote for best questions' do
 
       click_on "upvote-question"
 
-      expect(other_question.reload.rating).to eq 1
+      expect(other_question.rating).to eq 1
     end
 
     scenario "tries to downvote other user's question", js: true do
@@ -23,7 +23,7 @@ feature 'user can vote for best questions' do
 
       click_on "downvote-question"
 
-      expect(other_question.reload.rating).to eq -1
+      expect(other_question.rating).to eq -1
     end
 
     scenario "tries to upvote other user's question twice", js: true do
@@ -32,7 +32,7 @@ feature 'user can vote for best questions' do
       click_on "upvote-question"
       click_on "upvote-question"
 
-      expect(other_question.reload.rating).to eq 0
+      expect(other_question.rating).to eq 0
     end
 
     scenario "tries to downvote other user's question twice", js: true do
@@ -42,7 +42,7 @@ feature 'user can vote for best questions' do
       sleep 1
       click_on "downvote-question"
       sleep 1
-      expect(other_question.reload.rating).to eq 0
+      expect(other_question.rating).to eq 0
     end
 
     scenario 'tries to downvote question after upvoting', js: true do
@@ -51,7 +51,7 @@ feature 'user can vote for best questions' do
       click_on "upvote-question"
       click_on "downvote-question"
 
-      expect(other_question.reload.rating).to eq (-1)
+      expect(other_question.rating).to eq (-1)
     end
 
     scenario 'tries to upvote question after downvoting', js: true do
@@ -59,8 +59,8 @@ feature 'user can vote for best questions' do
 
       click_on "downvote-question"
       click_on "upvote-question"
-
-      expect(other_question.reload.rating).to eq (1)
+      sleep 1
+      expect(other_question.rating).to eq (1)
     end
 
     scenario 'tries to upvote own quesiton' do
@@ -83,7 +83,7 @@ feature 'user can vote for best questions' do
       click_on "upvote-question"
 
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
-      expect(question.reload.rating).to eq 0
+      expect(question.rating).to eq 0
     end
 
     scenario "tries to downvote other user's question", js: true do
@@ -92,7 +92,7 @@ feature 'user can vote for best questions' do
       click_on "downvote-question"
 
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
-      expect(question.reload.rating).to eq 0
+      expect(question.rating).to eq 0
     end
   end
 
@@ -129,7 +129,8 @@ feature 'user can vote for best answers' do
       within("#answer-#{answer.id}") do
         click_on "\u2B06"
       end
-      expect(answer.reload.rating).to eq 1
+      sleep 1
+      expect(answer.rating).to eq 1
     end
 
     scenario "tries to downvote other user's answer", js: true do
@@ -139,7 +140,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B07"
       end
 
-      expect(answer.reload.rating).to eq -1
+      expect(answer.rating).to eq -1
     end
 
     scenario "tries to upvote other user's answer twice", js: true do
@@ -150,7 +151,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B06"
       end
 
-      expect(answer.reload.rating).to eq 0
+      expect(answer.rating).to eq 0
     end
 
     scenario "tries to downvote other user's answer twice", js: true do
@@ -161,7 +162,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B07"
       end
 
-      expect(answer.reload.rating).to eq 0
+      expect(answer.rating).to eq 0
     end
 
     scenario 'tries to downvote answer after upvoting', js: true do
@@ -172,7 +173,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B07"
       end
 
-      expect(answer.reload.rating).to eq (-1)
+      expect(answer.rating).to eq (-1)
     end
 
     scenario 'tries to upvote answer after downvoting', js: true do
@@ -183,7 +184,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B06"
       end
 
-      expect(answer.reload.rating).to eq (1)
+      expect(answer.rating).to eq (1)
     end
 
     scenario 'tries to upvote own answer' do
@@ -212,7 +213,7 @@ feature 'user can vote for best answers' do
       end
 
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
-      expect(answer.reload.rating).to eq 0
+      expect(answer.rating).to eq 0
     end
 
     scenario "tries to downvote other user's answer", js: true do
@@ -223,7 +224,7 @@ feature 'user can vote for best answers' do
       end
 
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
-      expect(answer.reload.rating).to eq 0
+      expect(answer.rating).to eq 0
     end
   end
 

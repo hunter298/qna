@@ -14,7 +14,7 @@
                           data: {format: :json, answer_id: answer.id}
           tr
             td align="center"
-              = content_tag :h2, answer.rating, class: "answer-#{answer.id}-rating-counter"
+              = content_tag :h2, answer.votes.sum(:useful), class: "answer-#{answer.id}-rating-counter"
           tr
             - unless current_user&.author_of?(answer)
               td
