@@ -9,9 +9,9 @@ module Voted
       format.json do
         unless current_user&.author_of?(@votable)
           @votable.upvote(current_user)
-          render json: @votable.votes.sum(:useful)
+          render json: @votable.rating
         else
-          head 403
+          head :forbidden
         end
       end
     end
@@ -22,9 +22,9 @@ module Voted
       format.json do
         unless current_user&.author_of?(@votable)
           @votable.downvote(current_user)
-          render json: @votable.votes.sum(:useful)
+          render json: @votable.rating
         else
-          head 403
+          head :forbidden
         end
       end
     end

@@ -6,11 +6,7 @@ module Votable
 
     def upvote(user)
       if vote = votes.find_by(user: user)
-        if vote.useful == 1
-          vote.destroy
-        else
-          vote.update(useful: 1)
-        end
+        vote.useful == 1 ? vote.destroy : vote.update(useful: 1)
       else
         votes.create(user: user, useful: 1)
       end
@@ -18,11 +14,7 @@ module Votable
 
     def downvote(user)
       if vote = votes.find_by(user: user)
-        if vote.useful == -1
-          vote.destroy
-        else
-          vote.update(useful: -1)
-        end
+        vote.useful == -1 ? vote.destroy : vote.update(useful: -1)
       else
         votes.create(user: user, useful: -1)
       end
