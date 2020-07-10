@@ -8,7 +8,7 @@ i'd like to be able to create a question
 
   given(:user) { create(:user) }
 
-  describe 'Authenticated user' do
+  context 'Authenticated user' do
     background do
       sign_in(user)
 
@@ -41,6 +41,32 @@ i'd like to be able to create a question
 
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
+    end
+  end
+
+  context 'miltiple sessions' do
+    scenario 'question appears on another screen', js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit questions_path
+      end
+
+      Capybara.using_session('other_user') do
+        visit questions_path
+      end
+
+      Capybara.using_session('user') do
+        click_on 'Ask question'
+        fill_in 'Title', with: 'New question'
+        fill_in 'Body', with: 'Some text'
+
+        click_on 'Create Question'
+      end
+
+      Capybara.using_session('other_user') do
+        expect(page).to have_content 'New question'
+      end
+
     end
   end
 

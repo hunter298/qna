@@ -24,4 +24,6 @@ Rails.application.routes.draw do
   end
 
   resources :badges, only: %i[index]
+
+  mount ActionCable.server => '/cable'
 end

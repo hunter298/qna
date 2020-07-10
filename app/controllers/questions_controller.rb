@@ -3,6 +3,8 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
 
+  after_action :publish_question, only: %i[create]
+
   def index
     @questions = Question.all
   end
@@ -62,5 +64,10 @@ class QuestionsController < ApplicationController
     else
       params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy])
     end
+  end
+
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast 'questions', @question.title
   end
 end
