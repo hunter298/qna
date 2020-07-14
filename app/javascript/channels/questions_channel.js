@@ -11,7 +11,8 @@ consumer.subscriptions.create("QuestionsChannel", {
   },
 
   received(data) {
-    $('.questions').append(`<p> ${data} </p>`)
+    let question_html = require('templates/question.hbs')(data)
+    $('.questions').append(question_html)
     // Called when there's incoming data on the websocket for this channel
   }
 });

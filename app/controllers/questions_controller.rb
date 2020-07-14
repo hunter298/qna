@@ -7,6 +7,7 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all
+    gon.user = current_user&.id
   end
 
   def show
@@ -68,6 +69,6 @@ class QuestionsController < ApplicationController
 
   def publish_question
     return if @question.errors.any?
-    ActionCable.server.broadcast 'questions', @question.title
+    ActionCable.server.broadcast 'questions', @question
   end
 end
