@@ -2,7 +2,7 @@ import consumer from "./consumer"
 
 consumer.subscriptions.create("QuestionsChannel", {
   connected() {
-    console.log('connected!! yey!')
+    console.log('QuestionChannel connected!')
     this.perform('follow')
   },
 

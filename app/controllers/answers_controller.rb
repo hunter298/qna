@@ -3,6 +3,8 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user!
 
+  after_action :publish_answer, only: %i[create]
+
   def create
     @answer = question.answers.create(answer_params.merge(user: current_user))
   end
@@ -48,5 +50,10 @@ class AnswersController < ApplicationController
     else
       params.require(:answer).permit(:body, links_attributes: [:id, :name, :url, :_destroy])
     end
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast "question-#{question.id}", @answer
   end
 end

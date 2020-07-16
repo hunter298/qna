@@ -1,0 +1,50 @@
+<div class="answer">
+  <div class="row" id="answer-{{id}}">
+    <div class="rating col-12 col-md-2">
+      <table align="right">
+        <tr>
+          {{#unless (author_of? user_id)}}
+            <td>
+              <h2 class="answer-upvote">
+                <a class="upvote-answer" data-method="patch" rel="nofollow" data-remote="true" data-format="json" data-answer-id="{{id}}" href="/answers/{{id}}/upvote">
+                  ⬆
+                </a>
+              </h2>
+            </td>
+          {{/unless}}
+        </tr>
+        <tr>
+          <td align="center">
+            <h2 class="answer-{{id}}-rating-counter">
+              0
+            </h2>
+          </td>
+        </tr>
+        <tr>
+          {{#unless (author_of? user_id)}}
+            <td>
+              <h2 class="answer-downvote">
+                <a class="downvote-answer" data-method="patch" rel="nofollow" data-remote="true" data-format="json" data-answer-id="{{id}}" href="/answers/{{id}}/downvote">
+                  ⬇
+                </a>
+              </h2>
+            </td>
+          {{/unless}}
+        </tr>
+      </table>
+    </div>
+    <div class="col-12 col-md-8">
+      <p> {{body}} </p>
+    </div>
+    <div class="col-12 col-md-2">
+      {{#if (author_of? user_id)}}
+        <a href="answers/{{id}}/best" class="btn-secondary" data-method="post" data-remote="true"
+          Best
+        </a>
+      {{/if}}
+    </div>
+    <div class="col-12">
+      <hr>
+    </div>
+  </div>
+</div>

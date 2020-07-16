@@ -7,7 +7,6 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all
-    gon.user = current_user&.id
   end
 
   def show

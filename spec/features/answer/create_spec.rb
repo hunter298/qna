@@ -55,4 +55,28 @@ should be able to create answer
       expect(page).to_not have_content 'Some answer'
     end
   end
+
+  context 'miltiple sessions' do
+    scenario 'answer appears on another screen', js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('other_user') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer_body', with: 'New answer'
+
+        click_on 'Create Answer'
+      end
+
+      Capybara.using_session('other_user') do
+        expect(page).to have_content 'New answer'
+      end
+
+    end
+  end
 end
