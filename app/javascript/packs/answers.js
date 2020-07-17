@@ -43,4 +43,24 @@ $(document).on('turbolinks:load', function () {
             $('.alert').html(error)
         })
     }
+
+    voting()
+
+    $('.answer').on('ajax:success', 'form.new-comment', function (e) {
+        let answerId = $(this).data('answerId')
+        let commentHtml = require('templates/comment')(e.detail[0])
+        $(`#answer-${answerId} .answer-comments-list`).append(commentHtml)
+        $(`#answer-${answerId} #comment_body`).val('')
+    })
+
+    $('.answer').on('ajax:error', 'form.new-comment', function (e) {
+        let answerId = $(this).data('answerId')
+        let errors = e.detail[0]
+        let errorsSection = $(`#answer-${answerId}`).find('.comment-errors')
+
+        $.each(errors, function (ind, value) {
+            errorsSection.html('')
+            errorsSection.append(`<p>${value}</p>`)
+        })
+    })
 })

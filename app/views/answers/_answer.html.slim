@@ -29,7 +29,7 @@
       .col-12.col-md-2
         - if current_user&.author_of?(answer.question)
           = link_to 'Best', best_answer_path(answer),
-                  method: :post, data: { remote: true },
+                  method: :post, data: {remote: true},
                   class: answer.best ? 'btn btn-success' : 'btn btn-secondary'
       .links.col-12
         p Links
@@ -42,14 +42,14 @@
           = 'Options: '
           = link_to 'Delete', answer_path(answer),
                   method: :delete,
-                  data: { remote: true },
+                  data: {remote: true},
                   class: 'delete-answer'
         - if current_user&.author_of?(answer)
           = " | "
           = link_to 'Edit', '#',
                   class: "edit-answer-link",
-                  data: { answer_id: answer.id }
-        = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |form|
+                  data: {answer_id: answer.id}
+        = form_with model: answer, class: 'hidden', html: {id: "edit-answer-#{answer.id}"} do |form|
           p = form.text_field :body
           p = form.file_field :files, multiple: true
           p Links:
@@ -60,4 +60,11 @@
               = link_to_add_association 'add link', form, :links
           p = form.submit 'Save'
       .col-12
+
+      .col-12.comments
+        p Comments:
+        ul class="answer-comments-list list-group"
+          = render answer.comments.persisted
+        = render 'comments/form', commentable: answer, comment: answer.comments.new
+
         hr

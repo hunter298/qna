@@ -1,2 +1,4 @@
 li class="list-group-item"
-  = comment.body
+  p
+    span style="color:blue" = "#{comment.user.email}: "
+    = comment.body

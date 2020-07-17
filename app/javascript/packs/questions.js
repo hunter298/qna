@@ -27,13 +27,19 @@ $(document).on('turbolinks:load', function () {
         $('.alert').html(error)
     })
 
-    $('form.new-comment').on('ajax:success', function (e) {
-        let comment = require('templates/comment.hbs')(e.detail[0])
-        $('.comments-list').append(comment)
-        $('#comment_body').val('')
+    $('.question-comments').on('ajax:success', 'form.new-comment', function (e) {
+        let commentHtml = require('templates/comment')(e.detail[0])
+        $('.question-comments-list').append(commentHtml)
+        $('.question-comments #comment_body').val('')
     })
 
-    $('form.new-comment').on('ajax:error', function (e) {
-        console.log('govno')
+    $('.question-comments').on('ajax:error', 'form.new-comment', function (e) {
+        let errors = e.detail[0]
+        let errorSection = $('.question-comments .comment-errors')
+
+        $.each(errors, function (ind, value) {
+            errorSection.html('')
+            errorSection.append(`<p>${value}</p>`)
+        })
     })
 })

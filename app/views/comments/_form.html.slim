@@ -1,8 +1,10 @@
 .add-comment
-  = form_with model: [question, @comment], class: 'new-comment' do |form|
-    .comment-errors
-      = render 'shared/errors', resource: @comment
+  = form_with model: [commentable, comment],
+          class: 'new-comment',
+          data: {answer_id: ((commentable.is_a? Answer) ? commentable.id : nil)} do |form|
+    div class="comment-errors"
+      = render 'shared/errors', resource: comment
     .form-group
       = form.label :body, 'Leave a comment:', class: 'col-12 col-form-label'
-      = form.text_field :body, class: 'form-control'
+      = form.text_field :body, class: 'form-control', placeholder: 'Type your comment here'
     = form.submit 'Leave comment', class: 'btn btn-primary'

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   resources :questions, concerns: [:votable] do
     resources :answers, shallow: true, only: %i[create destroy update], concerns: [:votable] do
+      resources :comments, shallow: true, only: %i[create]
       member do
         post :best
         delete :delete_file_attached

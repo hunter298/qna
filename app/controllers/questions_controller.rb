@@ -12,7 +12,6 @@ class QuestionsController < ApplicationController
   def show
     @answer = question.answers.new
     @answer.links.build
-    @comment = question.comments.new
   end
 
   def new

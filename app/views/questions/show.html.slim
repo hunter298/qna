@@ -77,10 +77,11 @@
 
       = form.submit class: 'btn btn-primary'
 
-  .comments
-    ul class="comments-list list-group"
+  .question-comments
+    p Comments:
+    ul class="question-comments-list list-group"
       = render question.comments.persisted
-    = render 'comments/form', comment: question.comments.new
+    = render 'comments/form', commentable: question, comment: question.comments.new
 
   .row
     .col
