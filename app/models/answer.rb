@@ -5,6 +5,7 @@ class Answer < ApplicationRecord
   belongs_to :user
   has_many :links, dependent: :destroy, as: :linkable
   has_many :votes, as: :votable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
 
   accepts_nested_attributes_for :links, reject_if: :all_blank
 

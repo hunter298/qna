@@ -258,4 +258,21 @@ RSpec.describe QuestionsController, type: :controller do
         expect(own_question.votes.sum(:useful)).to eq 0
     end
   end
+
+  describe "POST#Add_comment" do
+    context 'authenticated user' do
+      before { login(user) }
+      it 'should create new comment in db' do
+        expect { post :add_comment, params: { id: question, comment: attributes_for(:comment)}, format: :json }.to change(Comment, :count).by(1)
+      end
+    end
+
+    context 'unauthenticated user' do
+      it "doesn't save new comment" do
+        expect do
+          post :add_comment, params: {id: question, comment: {body: 'Some text'}}, format: :json
+        end.to_not change(Comment, :count)
+      end
+    end
+  end
 end

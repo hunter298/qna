@@ -26,4 +26,14 @@ $(document).on('turbolinks:load', function () {
         var error = e.detail[0]['error']
         $('.alert').html(error)
     })
+
+    $('form.new-comment').on('ajax:success', function (e) {
+        let comment = require('templates/comment.hbs')(e.detail[0])
+        $('.comments-list').append(comment)
+        $('#comment_body').val('')
+    })
+
+    $('form.new-comment').on('ajax:error', function (e) {
+        console.log('govno')
+    })
 })

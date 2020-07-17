@@ -77,13 +77,10 @@
 
       = form.submit class: 'btn btn-primary'
 
-
-      / = form.label :title
-        / = form.text_field :title
-        / = form.label :body
-        / = form.text_area :body
-        / = form.file_field :files, multiple: true
-        / = form.submit
+  .comments
+    ul class="comments-list list-group"
+      = render question.comments.persisted
+    = render 'comments/form', comment: question.comments.new
 
   .row
     .col

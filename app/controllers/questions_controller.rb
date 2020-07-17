@@ -12,6 +12,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = question.answers.new
     @answer.links.build
+    @comment = question.comments.new
   end
 
   def new
@@ -47,6 +48,7 @@ class QuestionsController < ApplicationController
     end
     redirect_to questions_path, flash_message || {alert: "You're not authorized to delete this question"}
   end
+
 
   private
 

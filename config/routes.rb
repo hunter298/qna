@@ -17,6 +17,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :comments, shallow: true, only: %i[create]
+
     member do
       delete :delete_file_attached
     end

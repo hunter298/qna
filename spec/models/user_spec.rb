@@ -5,6 +5,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:votes).dependent(:destroy) }
   it { should have_many :badges }
+  it { should have_many :comments }
 
   describe 'User#author_of?' do
     let(:user) { create(:user) }
