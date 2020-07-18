@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def gon_params
-    gon.params = params
+    gon.params = params.permit(:id)
     gon.user = current_user&.id
   end
 end
