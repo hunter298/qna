@@ -41,9 +41,14 @@ gem 'cocoon'
 # for URL validation
 gem 'validate_url'
 
+# github API
 gem 'octokit', '~> 4.0'
 
+# ruby variables to js
 gem 'gon'
+
+gem 'omniauth'
+gem 'omniauth-github'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
