@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
   root to: 'questions#index'
+
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+  post '/oauth_email_confirmation', to: 'users#oauth_email_confirmation'
 
   concern :votable do
     member do
