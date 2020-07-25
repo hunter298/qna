@@ -1,6 +1,9 @@
 h3 Just let us know your e-mail address to finish your sign up process
 
+.errors
+  = render 'shared/errors', resource: @user
+
 = form_with url: oauth_email_confirmation_path, local: true do |form|
-  = from.label :email
+  = form.label :email
   = form.text_field :email
   = form.submit

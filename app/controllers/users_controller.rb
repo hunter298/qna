@@ -1,11 +1,19 @@
 class UsersController < ApplicationController
+  skip_before_action :authenticate_user!, only: %i[oauth_email_confirmation]
+
   def oauth_email_confirmation
     password = Devise.friendly_token[0, 20]
-    user = User.create!(email: params[:email], password: password, password_confirmation: password)
-    user.authorizations.create(provider: session[:provider], uid: session[:uid])
-    session[:provider] = nil
-    session[:uid] = nil
-    current_user.send_confirmation_instructions
-    redirect_to root_path, notice: 'Check Your e-mailbox to complete reigstration'
+    email = params[:email]
+    @user = User.new(email: email, password: password, password_confirmation: password)
+
+    if @user.save
+      @user.authorizations.create(provider: session[:provider], uid: session[:uid])
+      session[:provider] = nil
+      session[:uid] = nil
+      @user.send_confirmation_instructions
+      redirect_to root_path, notice: 'Check Your e-mailbox to complete registration'
+    else
+      render 'shared/facebook_email'
+    end
   end
 end

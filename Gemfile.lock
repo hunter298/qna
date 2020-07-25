@@ -72,6 +72,9 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
+    capybara-email (3.0.2)
+      capybara (>= 2.4, < 4.0)
+      mail
     childprocess (3.0.0)
     cocoon (1.2.14)
     concurrent-ruby (1.1.6)
@@ -165,7 +168,6 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
-    oauth (0.5.4)
     oauth2 (1.4.4)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
@@ -178,18 +180,14 @@ GEM
     omniauth (1.9.1)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
+    omniauth-facebook (6.0.0)
+      omniauth-oauth2 (~> 1.2)
     omniauth-github (1.4.0)
       omniauth (~> 1.5)
       omniauth-oauth2 (>= 1.4.0, < 2.0)
-    omniauth-oauth (1.1.0)
-      oauth
-      omniauth (~> 1.0)
     omniauth-oauth2 (1.6.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.9)
-    omniauth-twitter (1.4.0)
-      omniauth-oauth (~> 1.1)
-      rack
     orm_adapter (0.5.0)
     os (1.1.0)
     pg (1.2.3)
@@ -347,6 +345,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
+  capybara-email
   cocoon
   devise
   factory_bot_rails
@@ -358,8 +357,8 @@ DEPENDENCIES
   listen (~> 3.2)
   octokit (~> 4.0)
   omniauth
+  omniauth-facebook
   omniauth-github
-  omniauth-twitter
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.2)
