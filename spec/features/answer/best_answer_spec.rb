@@ -22,7 +22,7 @@ I'd like to be able to flag best answer
         click_link 'Best'
         sleep 1
         expect(first_answer.reload.best).to be_truthy
-        expect(page.find_link('Best')[:class]).to eq 'btn btn-success'
+        expect(page.find_link('Best')[:class]).to eq 'btn best btn-success'
       end
     end
 
@@ -36,11 +36,11 @@ I'd like to be able to flag best answer
         sleep 1
         expect(first_answer.reload.best).to be_falsey
         expect(second_answer.reload.best).to be_truthy
-        expect(page.find_link('Best')[:class]).to eq 'btn btn-success'
+        expect(page.find_link('Best')[:class]).to eq 'btn best btn-success'
       end
 
       within "#answer-#{first_answer.id}" do
-        expect(page.find_link('Best')[:class]).to eq 'btn btn-secondary'
+        expect(page.find_link('Best')[:class]).to eq 'btn best btn-secondary'
       end
     end
   end

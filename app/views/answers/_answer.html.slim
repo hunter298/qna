@@ -30,7 +30,7 @@
         - if current_user&.author_of?(answer.question)
           = link_to 'Best', best_answer_path(answer),
                   method: :post, data: {remote: true},
-                  class: answer.best ? 'btn btn-success' : 'btn btn-secondary'
+                  class: answer.best ? 'btn best btn-success' : 'btn best btn-secondary'
       .links.col-12
         p Links
         ul

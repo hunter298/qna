@@ -19,7 +19,7 @@ can sign up to be able to log in
       fill_in 'Password confirmation', with: user.password_confirmation
       click_on 'Sign up'
 
-      expect(page).to have_content 'Welcome! You have signed up successfully.'
+      expect(page).to have_content 'A message with a confirmation link has been sent to your email address.'
     end
 
     scenario 'tries to register with invalid data' do
