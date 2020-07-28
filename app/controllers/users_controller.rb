@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_user!, only: %i[oauth_email_confirmation]
-
   def oauth_email_confirmation
     password = Devise.friendly_token[0, 20]
     email = params[:email]

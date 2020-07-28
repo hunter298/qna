@@ -1,8 +1,11 @@
-.row.question-summary
+.row.question-summary id="question-#{question.id}"
   .col-12.col-md-8
     = link_to question.title, question_path(question), class: 'question-link', id: question.id
   .question-asked.col-12.col-md-4
     = "asked #{question.created_at}"
   .question-delete.col-12
-    -if can?(:update, question)
-      = link_to 'Delete', question_path(question), method: :delete, class: 'text-danger'
+    -if can?(:destroy, question)
+      = link_to 'Delete', question_path(question),
+              method: :delete,
+              class: 'text-danger',
+              data: { remote: true, confirm: 'Sure?' }

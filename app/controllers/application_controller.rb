@@ -1,11 +1,12 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   before_action :gon_params
 
-  check_authorization
+  # check_authorization
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, alert: exception.message
+    path = current_user ? root_path : new_user_session_path
+    redirect_to path, alert: exception.message
   end
 
   def delete_file_attached

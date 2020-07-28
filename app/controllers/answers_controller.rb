@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
 
   after_action :publish_answer, only: %i[create]
 

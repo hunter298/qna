@@ -1,11 +1,13 @@
 class QuestionsController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!, except: %i[index show]
+  # before_action :authenticate_user!, except: %i[index show]
 
   after_action :publish_question, only: %i[create]
 
+  # skip_authorization_check only: %i[index show]
   authorize_resource
+
 
   def index
     @questions = Question.all
@@ -36,18 +38,18 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user&.author_of?(question)
-      question.update(question_params)
-      question.files.attach(params[:question][:files]) if params[:question][:files]
-    end
+    # if current_user&.author_of?(question)
+    question.update(question_params)
+    question.files.attach(params[:question][:files]) if params[:question][:files]
+    # end
   end
 
   def destroy
-    if current_user&.author_of?(question)
-      question.destroy
-      flash_message = {notice: 'Question deleted successfully'}
-    end
-    redirect_to questions_path, flash_message || {alert: "You're not authorized to delete this question"}
+    # if current_user&.author_of?(question)
+    question.destroy
+    flash_message = {notice: 'Question deleted successfully'}
+    # end
+    # redirect_to questions_path, flash_message || {alert: "You're not authorized to delete this question"}
   end
 
 

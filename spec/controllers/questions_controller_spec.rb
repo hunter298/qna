@@ -17,111 +17,112 @@ RSpec.describe QuestionsController, type: :controller do
     it 'renders index view' do
       expect(response).to render_template :index
     end
+  end
 
-    describe 'GET #show' do
-      before { get :show, params: {id: question} }
+  describe 'GET #show' do
+    before { get :show, params: {id: question} }
 
-      it 'renders show view' do
-        expect(response).to render_template :show
+    it 'renders show view' do
+      expect(response).to render_template :show
+    end
+
+    it 'assigns new answer to question' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end
+
+    it 'assigns new link to answer' do
+      expect(assigns(:answer).links.first).to be_a_new(Link)
+    end
+  end
+
+  describe 'GET #new' do
+    before { login(user) }
+
+    before { get :new }
+
+    it 'render new view' do
+      expect(response).to render_template :new
+    end
+  end
+
+  describe 'GET #edit' do
+    before { login(user) }
+    before { get :edit, params: {id: question} }
+
+    it 'renders edit view' do
+      expect(response).to render_template :edit
+    end
+  end
+
+  describe 'POST #create' do
+    before { login(user) }
+
+    context 'with valid attributes' do
+      it 'saves new question in database' do
+        expect { post :create, params: {question: attributes_for(:question)} }.to change(Question, :count).by(1)
       end
-
-      it 'assigns new answer to question' do
-        expect(assigns(:answer)).to be_a_new(Answer)
-      end
-
-      it 'assigns new link to answer' do
-        expect(assigns(:answer).links.first).to be_a_new(Link)
+      it 'redirects to show view' do
+        post :create, params: {question: attributes_for(:question)}
+        expect(response).to redirect_to(assigns(:question))
       end
     end
 
-    describe 'GET #new' do
-      before { login(user) }
+    context 'with invalid attributes' do
+      it 'does not save question in database' do
+        expect { post :create, params: {question: attributes_for(:question, :invalid)} }.to_not change(Question, :count)
+      end
 
-      before { get :new }
-
-      it 'render new view' do
+      it 're-render new view' do
+        post :create, params: {question: attributes_for(:question, :invalid)}
         expect(response).to render_template :new
       end
     end
+  end
 
-    describe 'GET #edit' do
-      before { login(user) }
-      before { get :edit, params: {id: question} }
+  describe 'PATCH #update' do
+    before { login(user) }
 
-      it 'renders edit view' do
-        expect(response).to render_template :edit
+    context 'with valid attributes' do
+      it 'assigns the requested question to @question' do
+        patch :update, params: {id: question, question: attributes_for(:question)}, format: :js
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'cahnges question attributes' do
+        patch :update, params: {id: question, question: {body: 'new body', title: 'new title'}}, format: :js
+        question.reload
+
+        expect(question.body).to eq 'new body'
+        expect(question.title).to eq 'new title'
+      end
+
+      it 'renders template update' do
+        patch :update, params: {id: question, question: attributes_for(:question)}, format: :js
+        expect(response).to render_template :update
       end
     end
 
-    describe 'POST #create' do
-      before { login(user) }
+    context 'with invalid attributes' do
+      it 'does not change question' do
+        question.reload
 
-      context 'with valid attributes' do
-        it 'saves new question in database' do
-          expect { post :create, params: {question: attributes_for(:question)} }.to change(Question, :count).by(1)
-        end
-        it 'redirects to show view' do
-          post :create, params: {question: attributes_for(:question)}
-          expect(response).to redirect_to(assigns(:question))
-        end
-      end
-
-      context 'with invalid attributes' do
-        it 'does not save question in database' do
-          expect { post :create, params: {question: attributes_for(:question, :invalid)} }.to_not change(Question, :count)
-        end
-
-        it 're-render new view' do
-          post :create, params: {question: attributes_for(:question, :invalid)}
-          expect(response).to render_template :new
-        end
-      end
-    end
-
-    describe 'PATCH #update' do
-      before { login(user) }
-
-      context 'with valid attributes' do
-        it 'assigns the requested question to @question' do
-          patch :update, params: {id: question, question: attributes_for(:question)}, format: :js
-          expect(assigns(:question)).to eq question
-        end
-
-        it 'cahnges question attributes' do
-          patch :update, params: {id: question, question: {body: 'new body', title: 'new title'}}, format: :js
-          question.reload
-
-          expect(question.body).to eq 'new body'
-          expect(question.title).to eq 'new title'
-        end
-
-        it 'renders template update' do
-          patch :update, params: {id: question, question: attributes_for(:question)}, format: :js
-          expect(response).to render_template :update
-        end
-      end
-
-      context 'with invalid attributes' do
-        it 'does not change question' do
-          question.reload
-
-          expect do
-            patch :update, params: {id: question, question: attributes_for(:question, :invalid)}, format: :js
-          end.to_not change(question, :title)
-
-          expect do
-            patch :update, params: {id: question, question: attributes_for(:question, :invalid)}, format: :js
-          end.to_not change(question, :body)
-        end
-
-
-        it 'render update view' do
+        expect do
           patch :update, params: {id: question, question: attributes_for(:question, :invalid)}, format: :js
-          expect(response).to render_template :update
-        end
+        end.to_not change(question, :title)
+
+        expect do
+          patch :update, params: {id: question, question: attributes_for(:question, :invalid)}, format: :js
+        end.to_not change(question, :body)
+      end
+
+
+      it 'render update view' do
+        patch :update, params: {id: question, question: attributes_for(:question, :invalid)}, format: :js
+        expect(response).to render_template :update
       end
     end
   end
+
 
   describe 'DELETE #destroy' do
     context 'authorized user' do
@@ -131,26 +132,26 @@ RSpec.describe QuestionsController, type: :controller do
         let!(:question) { create(:question, user: user) }
 
         it 'can delete the question' do
-          expect { delete :destroy, params: {id: question} }.to change(Question, :count).by(-1)
+          expect { delete :destroy, params: {id: question}, format: :js }.to change(Question, :count).by(-1)
         end
 
         it 'redirects to index' do
-          delete :destroy, params: {id: question}
-          expect(response).to redirect_to questions_path
+          delete :destroy, params: {id: question}, format: :js
+          expect(response).to render_template :destroy
         end
       end
 
       context 'user is not author' do
         before { login(user) }
-
-        let!(:question) { create(:question, user: create(:user)) }
+        let!(:other_user) { create(:user) }
+        let!(:question) { create(:question, user: other_user) }
         it 'can not delete the question' do
-          expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
+          expect { delete :destroy, params: {id: question}, format: :js }.to_not change(Question, :count)
         end
 
         it 'redirects to index' do
-          delete :destroy, params: {id: question}
-          expect(response).to redirect_to questions_path
+          delete :destroy, params: {id: question}, format: :js
+          expect(response).to render_template questions_path
         end
       end
     end
@@ -206,25 +207,25 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'should increase question rating by 1' do
-        patch :upvote, params: {id: other_question}, format: :json
-        other_question.reload
+      patch :upvote, params: {id: other_question}, format: :json
+      other_question.reload
 
-        expect(other_question.votes.sum(:useful)).to eq 1
+      expect(other_question.votes.sum(:useful)).to eq 1
     end
 
     it 'should cancel first vote after second apply' do
-        patch :upvote, params: {id: other_question}, format: :json
-        patch :upvote, params: {id: other_question}, format: :json
-        other_question.reload
+      patch :upvote, params: {id: other_question}, format: :json
+      patch :upvote, params: {id: other_question}, format: :json
+      other_question.reload
 
-        expect(other_question.votes.sum(:useful)).to eq 0
+      expect(other_question.votes.sum(:useful)).to eq 0
     end
 
     it 'should not increase own question rating' do
-        patch :upvote, params: {id: own_question}, format: :json
-        own_question.reload
+      patch :upvote, params: {id: own_question}, format: :json
+      own_question.reload
 
-        expect(own_question.votes.sum(:useful)).to eq 0
+      expect(own_question.votes.sum(:useful)).to eq 0
     end
   end
 
@@ -237,25 +238,25 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'should decrease question rating by 1' do
-        patch :downvote, params: {id: other_question}, format: :json
-        other_question.reload
+      patch :downvote, params: {id: other_question}, format: :json
+      other_question.reload
 
-        expect(other_question.votes.sum(:useful)).to eq -1
+      expect(other_question.votes.sum(:useful)).to eq -1
     end
 
     it 'should cancel first vote after second apply' do
-        patch :downvote, params: {id: other_question}, format: :json
-        patch :downvote, params: {id: other_question}, format: :json
-        other_question.reload
+      patch :downvote, params: {id: other_question}, format: :json
+      patch :downvote, params: {id: other_question}, format: :json
+      other_question.reload
 
-        expect(other_question.votes.sum(:useful)).to eq 0
+      expect(other_question.votes.sum(:useful)).to eq 0
     end
 
     it 'should not decrease own question rating' do
-        patch :downvote, params: {id: own_question}, format: :json
-        own_question.reload
+      patch :downvote, params: {id: own_question}, format: :json
+      own_question.reload
 
-        expect(own_question.votes.sum(:useful)).to eq 0
+      expect(own_question.votes.sum(:useful)).to eq 0
     end
   end
 
