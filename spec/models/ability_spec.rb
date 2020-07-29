@@ -30,7 +30,9 @@ RSpec.describe Ability, type: :model do
     it { should_not be_able_to :downvote, create(:question, user: user), user: user }
     it { should be_able_to :downvote, create(:question, user: other), user: user }
     it { should_not be_able_to :destroy, create(:question, user: other), user: user }
-
+    it { should be_able_to :delete_file_attached, question, user: user }
+    it { should be_able_to :delete_file_attached, create(:answer, question: question, user: user), user: user }
+    it { should be_able_to :best, create(:answer, question: question, user: other), user: user }
   end
 
   describe 'guest abilities' do
