@@ -190,7 +190,7 @@ RSpec.describe AnswersController, type: :controller do
       before do
         sign_in(user)
 
-        delete :delete_file_attached, params: {id: answer.files.last.id}, format: :js
+        delete :delete_file_attached, params: {id: answer, attachment_id: answer.files.last.id}, format: :js
       end
 
       it 'should purge attached file' do
@@ -206,7 +206,7 @@ RSpec.describe AnswersController, type: :controller do
       before do
         sign_in(create(:user))
 
-        delete :delete_file_attached, params: {id: answer.files.last.id}, format: :js
+        delete :delete_file_attached, params: {id: answer, attachment_id: answer.files.last.id}, format: :js
       end
 
       it 'should not purge file' do

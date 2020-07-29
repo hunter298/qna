@@ -1,31 +1,29 @@
 class AnswersController < ApplicationController
   include Voted
 
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
 
   after_action :publish_answer, only: %i[create]
 
-  authorize_resource
-
   def create
     @answer = question.answers.create(answer_params.merge(user: current_user))
+    authorize! :create, Answer
   end
 
   def destroy
-    if current_user&.author_of?(answer)
-      answer.destroy
-    end
+    authorize! :destroy, answer
+    answer.destroy
   end
 
   def update
-    if current_user&.author_of?(answer)
-      answer.update(answer_params)
-      answer.files.attach(params[:answer][:files])
-    end
+    authorize! :update, answer
+    answer.update(answer_params)
+    answer.files.attach(params[:answer][:files])
   end
 
   def best
     @answer = Answer.find(params[:id])
+    authorize! :best, answer
     @question = @answer.question
     if current_user&.author_of?(@question)
       @answer.is_best!

@@ -2,6 +2,8 @@ module Voted
   extend ActiveSupport::Concern
   included do
     before_action :set_ratable, only: %i[upvote downvote]
+
+    load_and_authorize_resource
   end
 
   def upvote

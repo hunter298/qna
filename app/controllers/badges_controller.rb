@@ -3,5 +3,6 @@ class BadgesController < ApplicationController
 
   def index
     @badges = current_user.badges
+    authorize! :read, @badges
   end
 end

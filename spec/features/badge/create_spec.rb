@@ -38,6 +38,7 @@ I'd like to be able to create badge for best answer
         visit question_path(question)
 
         click_link 'Best'
+        sleep 1
       end.to change(other_user.badges, :count).by(1)
     end
   end

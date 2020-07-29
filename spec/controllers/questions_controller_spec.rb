@@ -151,7 +151,7 @@ RSpec.describe QuestionsController, type: :controller do
 
         it 'redirects to index' do
           delete :destroy, params: {id: question}, format: :js
-          expect(response).to render_template questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -173,7 +173,7 @@ RSpec.describe QuestionsController, type: :controller do
       before do
         sign_in(user)
 
-        delete :delete_file_attached, params: {id: question.files.last.id}, format: :js
+        delete :delete_file_attached, params: {id: question, attachment_id: question.files.last.id}, format: :js
       end
 
       it 'should purge attached file' do
@@ -189,7 +189,7 @@ RSpec.describe QuestionsController, type: :controller do
       before do
         sign_in(create(:user))
 
-        delete :delete_file_attached, params: {id: question.files.last.id}, format: :js
+        delete :delete_file_attached, params: {id: question, attachment_id: question.files.last.id}, format: :js
       end
 
       it 'should not purge file' do

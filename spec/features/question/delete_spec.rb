@@ -17,7 +17,7 @@ should be able to delete question, created by him
       visit questions_path
     end
 
-    scenario 'tries to delete own question' do
+    scenario 'tries to delete own question', js: true do
       click_link 'Delete', href: question_path(question)
 
       expect(page).to_not have_content question.title
