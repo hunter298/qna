@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root to: 'questions#index'
 
-  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
+  devise_for :users, controllers: {omniauth_callbacks: 'oauth_callbacks'}
   post '/oauth_email_confirmation', to: 'users#oauth_email_confirmation'
 
   concern :votable do
@@ -16,19 +16,16 @@ Rails.application.routes.draw do
       resources :comments, shallow: true, only: %i[create]
       member do
         post :best
-        delete :delete_file_attached
       end
     end
 
     resources :comments, shallow: true, only: %i[create]
-
-    member do
-      delete :delete_file_attached
-    end
-
   end
 
   resources :badges, only: %i[index]
+  scope :active_storage, module: :active_storage, as: :active_storage do
+    resources :attachments, only: %i[destroy]
+  end
 
   mount ActionCable.server => '/cable'
 end

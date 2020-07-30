@@ -6,8 +6,8 @@ class AnswersController < ApplicationController
   after_action :publish_answer, only: %i[create]
 
   def create
-    @answer = question.answers.create(answer_params.merge(user: current_user))
     authorize! :create, Answer
+    @answer = question.answers.create(answer_params.merge(user: current_user))
   end
 
   def destroy

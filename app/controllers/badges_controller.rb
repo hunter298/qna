@@ -2,7 +2,7 @@ class BadgesController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    authorize! :read, Badge
     @badges = current_user.badges
-    authorize! :read, @badges
   end
 end

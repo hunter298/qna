@@ -83,7 +83,7 @@ feature 'user can vote for best questions' do
 
       click_on "upvote-question"
 
-      expect(page).to have_content 'You are not authorized to access this page.'
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
       expect(question.rating).to eq 0
     end
 
@@ -92,7 +92,7 @@ feature 'user can vote for best questions' do
 
       click_on "downvote-question"
 
-      expect(page).to have_content 'You are not authorized to access this page.'
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
       expect(question.rating).to eq 0
     end
   end
@@ -160,6 +160,7 @@ feature 'user can vote for best answers' do
 
       within("#answer-#{answer.id}") do
         click_on "\u2B07"
+        sleep 1
         click_on "\u2B07"
       end
 
@@ -182,6 +183,7 @@ feature 'user can vote for best answers' do
 
       within("#answer-#{answer.id}") do
         click_on "\u2B07"
+        sleep 1
         click_on "\u2B06"
       end
 
@@ -213,7 +215,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B06"
       end
 
-      expect(page).to have_content 'You are not authorized to access this page.'
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
       expect(answer.rating).to eq 0
     end
 
@@ -224,7 +226,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B07"
       end
 
-      expect(page).to have_content 'You are not authorized to access this page.'
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
       expect(answer.rating).to eq 0
     end
   end

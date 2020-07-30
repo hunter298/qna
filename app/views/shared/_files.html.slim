@@ -4,7 +4,4 @@
       = link_to file.filename.to_s, url_for(file)
       - if current_user&.author_of?(file.record)
         = '  |  '
-        - if resource.is_a? Question
-          = link_to 'Delete file', delete_file_attached_question_path(resource, attachment_id: file.id), method: :delete, data: { remote: true }
-        - if resource.is_a? Answer
-          = link_to 'Delete file', delete_file_attached_answer_path(resource, attachment_id: file.id), method: :delete, data: { remote: true }
+        = link_to 'Delete file', active_storage_attachment_path(file), method: :delete, data: { remote: true }

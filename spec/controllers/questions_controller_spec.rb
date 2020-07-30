@@ -45,15 +45,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    before { login(user) }
-    before { get :edit, params: {id: question} }
-
-    it 'renders edit view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     before { login(user) }
 
@@ -149,9 +140,9 @@ RSpec.describe QuestionsController, type: :controller do
           expect { delete :destroy, params: {id: question}, format: :js }.to_not change(Question, :count)
         end
 
-        it 'redirects to index' do
+        it 'shows error message' do
           delete :destroy, params: {id: question}, format: :js
-          expect(response).to redirect_to root_path
+          expect(response.status).to eq 403
         end
       end
     end
@@ -160,40 +151,6 @@ RSpec.describe QuestionsController, type: :controller do
       let!(:question) { create(:question, user: user) }
       it 'can not delete question' do
         expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
-      end
-    end
-  end
-
-  describe 'DELETE #Delete_file_attached' do
-    before do
-      question.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", "w+"), filename: 'test-file.txt')
-    end
-
-    context 'author of question tries to delete attached file' do
-      before do
-        sign_in(user)
-
-        delete :delete_file_attached, params: {id: question, attachment_id: question.files.last.id}, format: :js
-      end
-
-      it 'should purge attached file' do
-        expect(question.files.reload).to be_empty
-      end
-
-      it 'should render delete_file_attached view' do
-        expect(response).to render_template 'shared/_delete_file_attached'
-      end
-    end
-
-    context 'other user tries to delete attached file' do
-      before do
-        sign_in(create(:user))
-
-        delete :delete_file_attached, params: {id: question, attachment_id: question.files.last.id}, format: :js
-      end
-
-      it 'should not purge file' do
-        expect(question.files.reload).to_not be_empty
       end
     end
   end

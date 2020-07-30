@@ -5,16 +5,13 @@ class ApplicationController < ActionController::Base
   check_authorization unless: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
-    path = current_user ? root_path : new_user_session_path
-    redirect_to path, alert: exception.message
-  end
-
-  def delete_file_attached
-    @file = ActiveStorage::Attachment.find(params[:attachment_id])
-    authorize! :delete_file_attached, @file.record
-    if current_user&.author_of?(@file.record)
-      @file.purge
-      render partial: 'shared/delete_file_attached'
+    respond_to do |format|
+      format.html do
+        path = current_user ? root_path : new_user_session_path
+        redirect_to path, alert: exception.message
+      end
+      format.json { render json: {error: exception.message}, status: :unauthorized }
+      format.js { head :forbidden }
     end
   end
 

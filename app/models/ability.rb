@@ -30,7 +30,8 @@ class Ability
     can :downvote, [Question, Answer]
     cannot :downvote, [Question, Answer], user_id: user.id
     can :best, Answer, question_id: user.question_ids
-    can :delete_file_attached, [Question, Answer], user_id: user.id
+    can :destroy, ActiveStorage::Attachment, record_id: user.question_ids
+    can :destroy, ActiveStorage::Attachment, record_id: user.answer_ids
   end
 
   def guest_abilities
