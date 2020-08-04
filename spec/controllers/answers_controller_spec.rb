@@ -180,68 +180,28 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #Upvote' do
-    let(:user) { create(:user) }
-    let(:question) { create(:question, user: user) }
+    let(:some_user) { create(:user) }
+    let(:question) { create(:question, user: some_user) }
     let!(:answer) { create(:answer, question: question, user: create(:user)) }
-    let!(:own_answer) { create(:answer, question: question, user: user) }
+    let!(:own_answer) { create(:answer, question: question, user: some_user) }
 
-    before do
-      login(user)
-    end
-
-    it 'should increase question rating by 1' do
-        patch :upvote, params: {id: answer}, format: :json
-        answer.reload
-
-        expect(answer.votes.sum(:useful)).to eq 1
-    end
-
-    it 'should cancel first vote after second apply' do
-        patch :upvote, params: {id: answer}, format: :json
-        patch :upvote, params: {id: answer}, format: :json
-        answer.reload
-
-        expect(answer.votes.sum(:useful)).to eq 0
-    end
-
-    it 'should not increase own question rating' do
-        patch :upvote, params: {id: own_answer}, format: :json
-        own_answer.reload
-
-        expect(answer.votes.sum(:useful)).to eq 0
+    it_behaves_like 'Upvotable' do
+      let(:user) { :some_user }
+      let(:foreign_object) { :answer }
+      let(:own_object) { :own_answer }
     end
   end
 
   describe 'PATCH #Downvote' do
-    let(:user) { create(:user) }
-    let(:question) { create(:question, user: user) }
+    let(:some_user) { create(:user) }
+    let(:question) { create(:question, user: some_user) }
     let!(:answer) { create(:answer, question: question, user: create(:user)) }
-    let!(:own_answer) { create(:answer, question: question, user: user) }
+    let!(:own_answer) { create(:answer, question: question, user: some_user) }
 
-    before do
-      login(user)
-    end
-
-    it 'should decrease question rating by 1' do
-        patch :downvote, params: {id: answer}, format: :json
-        answer.reload
-
-        expect(answer.votes.sum(:useful)).to eq -1
-    end
-
-    it 'should cancel first vote after second apply' do
-        patch :downvote, params: {id: answer}, format: :json
-        patch :downvote, params: {id: answer}, format: :json
-        answer.reload
-
-        expect(answer.votes.sum(:useful)).to eq 0
-    end
-
-    it 'should not decrease own question rating' do
-        patch :downvote, params: {id: own_answer}, format: :json
-        own_answer.reload
-
-        expect(answer.votes.sum(:useful)).to eq 0
+    it_behaves_like 'Downvotable' do
+      let(:user) { :some_user }
+      let(:other_object) { :answer }
+      let(:own_object) { :own_answer }
     end
   end
 
