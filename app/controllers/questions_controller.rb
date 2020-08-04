@@ -24,8 +24,7 @@ class QuestionsController < ApplicationController
 
   def create
     authorize! :create, Question
-    @question = Question.new(question_params)
-    @question.user = current_user
+    @question = current_user.questions.new(question_params)
 
     if @question.save
       redirect_to @question, notice: 'Question successfully created!'
