@@ -34,8 +34,8 @@ describe 'Profiles API', type: :request do
     end
   end
 
-  describe 'GET /api/v1/profiles/all' do
-    let(:api_path) { '/api/v1/profiles/all' }
+  describe 'GET /api/v1/profiles' do
+    let(:api_path) { '/api/v1/profiles' }
     let!(:user) { create(:user) }
     let!(:users) { create_list(:user, 3) }
 
