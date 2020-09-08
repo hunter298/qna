@@ -43,6 +43,35 @@
                         method: :patch,
                         remote: true,
                         data: {type: :json}
+
+  - if can? :create, Subscription
+    - if Subscription.where(question: question, user: current_user).any?
+      = link_to 'Unsubscribe',
+              question_subscriptions_path(question),
+              method: :post,
+              remote: true,
+              id: 'subscribe-for-answers',
+              class: 'btn btn-primary'
+      = link_to 'Subscribe',
+              question_subscriptions_path(question),
+              method: :post,
+              remote: true,
+              id: 'unsubscribe-from-answers',
+              class: 'btn btn-primary hidden'
+    - else
+      = link_to 'Subscribe',
+              question_subscriptions_path(question),
+              method: :post,
+              remote: true,
+              id: 'subscribe-for-answers',
+              class: 'btn btn-primary'
+      = link_to 'Unsubscribe',
+              question_subscriptions_path(question),
+              method: :post,
+              remote: true,
+              id: 'unsubscribe-from-answers',
+              class: 'btn btn-primary hidden'
+
   .question-links
     p Links
     ul

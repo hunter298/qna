@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     end
 
     resources :comments, shallow: true, only: %i[create]
+
+    resources :subscriptions, shallow: true, only: %i[create destroy]
   end
 
   resources :badges, only: %i[index]

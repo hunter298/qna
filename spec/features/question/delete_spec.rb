@@ -12,7 +12,6 @@ should be able to delete question, created by him
 
   describe 'authenticated user' do
     background do
-
       sign_in(users[0])
       visit questions_path
     end
