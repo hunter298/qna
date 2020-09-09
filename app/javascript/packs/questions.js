@@ -43,14 +43,9 @@ $(document).on('turbolinks:load', function () {
         })
     })
 
-    $('#subscribe-for-answers').on('ajax:success', function (e) {
+    $('#subscribe-for-answers').on('click', function (e) {
+        e.preventDefault()
         $(this).addClass('hidden')
-        let unsubscribeUrl = `/subscriptions/${e.detail[0]}`
-        $('#unsubscribe-from-answers').attr('href', unsubscribeUrl).removeClass('hidden')
-    })
-
-    $('#unsubscribe-from-answers').on('ajax:success', function (e) {
-        $(this).attr('href', '#').addClass('hidden')
-        $('#subscribe-for-answers').removeClass('hidden')
+        $('#unsubscribe-from-answers').removeClass('hidden')
     })
 })
