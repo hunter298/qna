@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  use_doorkeeper
   root to: 'questions#index'
 
   devise_for :users, controllers: {omniauth_callbacks: 'oauth_callbacks'}
@@ -26,16 +25,6 @@ Rails.application.routes.draw do
   resources :badges, only: %i[index]
   scope :active_storage, module: :active_storage, as: :active_storage do
     resources :attachments, only: %i[destroy]
-  end
-
-  namespace :api do
-    namespace :v1 do
-      resource :profiles, only: [] do
-        get :me, on: :collection
-      end
-
-      resources :questions, only: %i[index]
-    end
   end
 
   mount ActionCable.server => '/cable'
