@@ -14,6 +14,7 @@ class QuestionsController < ApplicationController
     authorize! :read, Question
     @answer = question.answers.new
     @answer.links.build
+    @subscription = question.subscriptions.where(user: current_user).first
   end
 
   def new
@@ -27,6 +28,7 @@ class QuestionsController < ApplicationController
     @question = current_user.questions.new(question_params)
 
     if @question.save
+      question.subscriptions.create(user: current_user)
       redirect_to @question, notice: 'Question successfully created!'
     else
       render :new
