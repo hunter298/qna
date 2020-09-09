@@ -18,12 +18,6 @@ RSpec.describe AnswersController, type: :controller do
 
           expect(response).to render_template :create
         end
-
-        it 'run NewAnswerNoticeService' do
-          expect(NewAnswerNoticeService).to receive(:new).and_call_original
-          post :create, params: {question_id: question, answer: attributes_for(:answer)}, format: :js
-        end
-
       end
 
       context 'with invalid attributes' do
