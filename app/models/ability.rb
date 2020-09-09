@@ -24,7 +24,7 @@ class Ability
     guest_abilities
     can :create, [Question, Answer, Comment, Subscription]
     can :update, [Question, Answer, Comment], user_id: user.id
-    can :destroy, [Question, Answer, Comment, Subscription], user_id: user.id
+    can :destroy, [Question, Answer, Comment], user_id: user.id
     can :upvote, [Question, Answer]
     cannot :upvote, [Question, Answer], user_id: user.id
     can :downvote, [Question, Answer]

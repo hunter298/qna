@@ -16,18 +16,10 @@ I want to be able to subscribe for email distribution
       visit question_path(question)
     end
 
-    scenario 'tries to subscribe for new answers', js: true do
-      click_on 'Subscribe'
+    scenario 'tries to subscribe for new answers' do
+      click_link('Subscribe')
 
       expect(page).to have_content('Unsubscribe')
-      expect(Subscription.count).to eq 1
-    end
-
-    scenario 'tries to unsubscribe from answer', js: true do
-      click_on 'Subscribe'
-      click_on 'Unsubscribe'
-
-      expect(Subscription.count).to eq 0
     end
   end
 

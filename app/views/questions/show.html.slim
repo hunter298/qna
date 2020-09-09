@@ -44,35 +44,33 @@
                         remote: true,
                         data: {type: :json}
 
-  .subscription
-    - if @subscription
-      - if can? :destroy, @subscription
-        = link_to 'Unsubscribe',
-                "/subscriptions/#{@subscription.id}",
-                method: :delete,
-                remote: true,
-                id: 'unsubscribe-from-answers',
-                class: 'btn btn-primary'
-        = link_to 'Subscribe',
-                question_subscriptions_path(question),
-                method: :post,
-                remote: true,
-                id: 'subscribe-for-answers',
-                class: 'btn btn-primary hidden'
+  - if can? :create, Subscription
+    - if Subscription.where(question: question, user: current_user).any?
+      = link_to 'Unsubscribe',
+              question_subscriptions_path(question),
+              method: :post,
+              remote: true,
+              id: 'subscribe-for-answers',
+              class: 'btn btn-primary'
+      = link_to 'Subscribe',
+              question_subscriptions_path(question),
+              method: :post,
+              remote: true,
+              id: 'unsubscribe-from-answers',
+              class: 'btn btn-primary hidden'
     - else
-      - if can?(:create, Subscription)
-        = link_to 'Subscribe',
-                question_subscriptions_path(question),
-                method: :post,
-                remote: true,
-                id: 'subscribe-for-answers',
-                class: 'btn btn-primary'
-        = link_to 'Unsubscribe', '#',
-                method: :delete,
-                remote: true,
-                id: 'unsubscribe-from-answers',
-                class: 'btn btn-primary hidden'
-
+      = link_to 'Subscribe',
+              question_subscriptions_path(question),
+              method: :post,
+              remote: true,
+              id: 'subscribe-for-answers',
+              class: 'btn btn-primary'
+      = link_to 'Unsubscribe',
+              question_subscriptions_path(question),
+              method: :post,
+              remote: true,
+              id: 'unsubscribe-from-answers',
+              class: 'btn btn-primary hidden'
 
   .question-links
     p Links
