@@ -42,10 +42,4 @@ $(document).on('turbolinks:load', function () {
             errorSection.append(`<p>${value}</p>`)
         })
     })
-
-    $('#subscribe-for-answers').on('click', function (e) {
-        e.preventDefault()
-        $(this).addClass('hidden')
-        $('#unsubscribe-from-answers').removeClass('hidden')
-    })
 })
