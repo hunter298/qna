@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :subscription do
-    user { nil }
-    question { nil }
+    user { create(:user) }
+    question { create(:question, user: create(:user)) }
   end
 end

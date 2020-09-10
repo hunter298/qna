@@ -48,7 +48,7 @@
     - if @subscription
       - if can? :destroy, @subscription
         = link_to 'Unsubscribe',
-                "/subscriptions/#{@subscription.id}",
+                subscription_path(@subscription),
                 method: :delete,
                 remote: true,
                 id: 'unsubscribe-from-answers',

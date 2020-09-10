@@ -13,6 +13,11 @@ RSpec.describe SubscriptionsController, type: :controller do
         expect { post :create, params: { question_id: question }, format: :json }.to change(Subscription, :count).by(1)
       end
 
+      it 'does not redirect anyway' do
+        post :create, params: { question_id: question }, format: :json
+        expect(response.status).to_not eq 302
+      end
+
       it 'does not create second subscription if called twice' do
         expect do
           post :create, params: { question_id: question }, format: :json
@@ -39,8 +44,12 @@ RSpec.describe SubscriptionsController, type: :controller do
 
       context 'has subscription' do
         it 'destroys subscription' do
+          expect {delete :destroy, params: { id: subscription }, format: :json}.to change(Subscription, :count).by(-1)
+        end
+
+        it 'does not redirect anyway' do
           delete :destroy, params: { id: subscription }, format: :json
-          expect(Subscription.count).to eq 0
+          expect(response.status).to_not eq 302
         end
       end
     end

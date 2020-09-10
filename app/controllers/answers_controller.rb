@@ -8,7 +8,6 @@ class AnswersController < ApplicationController
   def create
     authorize! :create, Answer
     @answer = question.answers.create(answer_params.merge(user: current_user))
-    NewAnswerNoticeJob.perform_later(@answer) if @answer.errors.empty?
   end
 
   def destroy

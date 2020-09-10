@@ -13,6 +13,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  after_create :send_new_answer_notice
+
   def is_best!
     Answer.transaction do
       unless best
@@ -23,5 +25,11 @@ class Answer < ApplicationRecord
         end
       end
     end
+  end
+
+  private
+
+  def send_new_answer_notice
+    NewAnswerNoticeJob.perform_later(self)
   end
 end
