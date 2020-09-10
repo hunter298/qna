@@ -1,8 +1,8 @@
 class NewAnswerNoticeService
   def send_notice(answer)
-    users = Subscription.where(question: answer.question).map { |sub| sub.user }
-    users.each do |user|
-      NewAnswerNoticeMailer.notice(user, answer).deliver_later
+    subscriptions = Subscription.where(question: answer.question)
+    subscriptions.find_each(batch_size: 500) do |sub|
+      NewAnswerNoticeMailer.notice(sub.user, answer).deliver_later
     end
   end
 end
