@@ -54,7 +54,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
     if @answer.update(answer_params)
       render json: @answer, adapter: :json
     else
-      render json: {error: @answer.errors.full_messages}, status: :unprocessable_entity
+      render json: { error: @answer.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
