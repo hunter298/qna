@@ -38,8 +38,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+<<<<<<< HEAD
       resources :profiles, only: %i[index] do
         get :me, on: :collection
+=======
+      resource :profiles, only: [] do
+        get :me, on: :collection
+        get :all, on: :collection
+>>>>>>> 4e82c86f711bb113aabbaa29de28b74a45ee9788
       end
 
       resources :questions, only: %i[index show create destroy edit update] do
