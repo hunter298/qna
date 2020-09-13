@@ -24,10 +24,11 @@ I want to be able to subscribe for email distribution
     end
 
     scenario 'tries to unsubscribe from answer', js: true do
-      click_on 'Subscribe'
-      click_on 'Unsubscribe'
-
-      expect(Subscription.count).to eq 0
+      expect do
+        click_on 'Subscribe'
+        sleep 1
+        click_on 'Unsubscribe'
+      end.to_not change(Subscription, :count)
     end
   end
 

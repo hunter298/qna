@@ -7,6 +7,6 @@ class Comment < ApplicationRecord
   scope :persisted, -> { where 'id IS NOT NULL' }
 
   def commentable
-    commentable_type.constantize.find(commentable_id)
+    commentable_type&.constantize&.find(commentable_id)
   end
 end

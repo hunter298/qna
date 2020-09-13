@@ -30,7 +30,12 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def destroy
-    @question = Question.find(params[:id])
+    begin
+      @question = Question.find(params[:id])
+    rescue ActiveRecord::RecordNotFound => e
+      @question = nil
+      @error = e.message
+    end
     respond_to do |format|
       format.json do
         if @question

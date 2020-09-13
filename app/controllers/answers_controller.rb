@@ -1,15 +1,9 @@
 class AnswersController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!, except: %i[show]
+  before_action :authenticate_user!
 
   after_action :publish_answer, only: %i[create]
-
-  def show
-    authorize! :read, Answer
-    redirect_to question_path(answer.question, anchor: "answer-#{answer.id}"), status: 303
-  end
-
 
   def create
     authorize! :create, Answer
