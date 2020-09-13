@@ -1,5 +1,13 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_user!, only: %i[oauth_email_confirmation]
+  skip_before_action :authenticate_user!, only: %i[show oauth_email_confirmation]
+
+  def show
+    @user = User.find(params[:id])
+    authorize! :read, @user
+    @questions = @user.questions
+    @answers = @user.answers
+    @comments = @user.comments
+  end
 
   def oauth_email_confirmation
     password = Devise.friendly_token[0, 20]

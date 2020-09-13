@@ -1,9 +1,15 @@
 class AnswersController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: %i[show]
 
   after_action :publish_answer, only: %i[create]
+
+  def show
+    authorize! :read, Answer
+    redirect_to question_path(answer.question, anchor: "answer-#{answer.id}"), status: 303
+  end
+
 
   def create
     authorize! :create, Answer
@@ -12,6 +18,7 @@ class AnswersController < ApplicationController
 
   def destroy
     authorize! :destroy, answer
+    answer.comments.destroy_all
     answer.destroy
   end
 

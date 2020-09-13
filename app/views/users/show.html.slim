@@ -1,0 +1,9 @@
+h2 User
+h3 = "Email: #{@user.email}"
+p = "Registered #{@user.created_at}"
+h3 Questions:
+= render partial: 'searches/result', collection: @questions
+h3 Answers:
+= render partial: 'searches/result', collection: @answers
+h3 Comments:
+= render partial: 'searches/result', collection: @comments

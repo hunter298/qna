@@ -43,6 +43,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     authorize! :destroy, question
+    question.comments.destroy_all
     question.destroy
   end
 

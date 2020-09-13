@@ -38,14 +38,12 @@
       .col-12.answer-files
         = render 'shared/files', resource: answer
       .col-12
-        / - if current_user&.author_of?(answer)
         - if can? :update, answer
           = 'Options: '
           = link_to 'Delete', answer_path(answer),
                   method: :delete,
                   data: {remote: true},
                   class: 'delete-answer'
-        / - if current_user&.author_of?(answer)
         - if can? :destroy, answer
           = " | "
           = link_to 'Edit', '#',

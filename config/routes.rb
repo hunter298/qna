@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {omniauth_callbacks: 'oauth_callbacks'}
   post '/oauth_email_confirmation', to: 'users#oauth_email_confirmation'
 
+  get '/search', to: 'searches#search'
+
   concern :votable do
     member do
       patch :upvote
@@ -19,7 +21,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:votable] do
-    resources :answers, shallow: true, only: %i[create destroy update], concerns: [:votable] do
+    resources :answers, shallow: true, only: %i[show create destroy update], concerns: [:votable] do
       resources :comments, shallow: true, only: %i[create]
       member do
         post :best
@@ -38,14 +40,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-<<<<<<< HEAD
       resources :profiles, only: %i[index] do
         get :me, on: :collection
-=======
-      resource :profiles, only: [] do
-        get :me, on: :collection
-        get :all, on: :collection
->>>>>>> 4e82c86f711bb113aabbaa29de28b74a45ee9788
       end
 
       resources :questions, only: %i[index show create destroy edit update] do
@@ -53,6 +49,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  resources :users, only: %i[show]
 
   mount ActionCable.server => '/cable'
 end

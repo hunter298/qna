@@ -1,0 +1,10 @@
+- if result.is_a? Question
+  p = link_to result.title, "/questions/#{result.id}"
+- elsif result.is_a? Answer
+  p = link_to result.body.truncate(40), "/questions/#{result.question.id}/\#answer-#{result.id}"
+- elsif result.is_a?(Comment) && result.commentable_type == 'Question'
+  p = link_to  result.body.truncate(40), "/questions/#{result.commentable_id}"
+- elsif result.is_a?(Comment) && result.commentable_type == 'Answer'
+  p = link_to  result.body.truncate(40), "/questions/#{Answer.find(result.commentable_id).question.id}/\#answer-#{Answer.find(result.commentable_id).id}"
+- elsif result.is_a? User
+  p = link_to result.email, "users/#{result.id}"
