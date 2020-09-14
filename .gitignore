@@ -28,6 +28,10 @@
 # Ignore master key for decrypting credentials and more and database
 /config/master.key
 /config/database.yml
+/config/development.sphinx.conf
+/config/test.sphinx.conf
+
+/db/sphinx/*
 
 /public/packs
 /public/packs-test
@@ -43,3 +47,4 @@ yarn-debug.log*
 .env
 
 .zshrc
+
