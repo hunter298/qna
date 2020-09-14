@@ -11,7 +11,7 @@ nav class="navbar navbar-expand-lg navbar-light bg-light"
         = form.text_field :query, class: 'form-control mr-sm-2', type: 'search'
       .col
         = form.collection_select :query_class,
-                ApplicationRecord::SEARCH_CLASSES,
+                ApplicationController::SEARCH_CLASSES,
                 :constantize, :to_s,
                 {prompt: 'Everywhere'},
                 {class: 'form-control'}

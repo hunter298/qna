@@ -30,21 +30,12 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def destroy
-    begin
-      @question = Question.find(params[:id])
-    rescue ActiveRecord::RecordNotFound => e
-      @question = nil
-      @error = e.message
-    end
+    @question = Question.find(params[:id])
+    authorize! :destroy, @question
     respond_to do |format|
       format.json do
-        if @question
-          authorize! :destroy, @question
-          @question.destroy
-          render json: {message: 'Question deleted'}, status: :ok
-        else
-          render json: {error: @error}, status: 204
-        end
+        @question.destroy
+        render json: {message: 'Question deleted'}, status: :ok
       end
     end
   end
