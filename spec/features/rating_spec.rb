@@ -149,6 +149,7 @@ feature 'user can vote for best answers' do
 
       within("#answer-#{answer.id}") do
         click_on "\u2B06"
+        sleep 1
         click_on "\u2B06"
       end
 
@@ -162,6 +163,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B07"
         sleep 1
         click_on "\u2B07"
+        sleep 1
       end
 
       expect(answer.rating).to eq 0

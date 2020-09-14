@@ -7,7 +7,7 @@ RSpec.configure do |config|
 
     # DatabaseCleaner settings
     config.before(:suite) do
-      DatabaseCleaner.clean_with(:truncation)
+      # DatabaseCleaner.clean_with(:truncation)
       # Ensure sphinx directories exist for the test environment
       ThinkingSphinx::Test.init
       # Configure and start Sphinx, and automatically stop Sphinx at the end of the test suite.

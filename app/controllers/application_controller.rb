@@ -4,8 +4,6 @@ class ApplicationController < ActionController::Base
 
   check_authorization unless: :devise_controller?
 
-  SEARCH_CLASSES = %w[Question Answer Comment User].freeze
-
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.html do
