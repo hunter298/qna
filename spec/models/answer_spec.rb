@@ -14,6 +14,15 @@ RSpec.describe Answer, type: :model do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
+  describe '#path' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let!(:answer) { create(:answer, question: question, user: user) }
+
+    it 'returns relative link for answer' do
+      expect(answer.path).to eq "/questions/#{answer.question_id}#answer-#{answer.id}"
+    end
+  end
   describe "#is_best!" do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
