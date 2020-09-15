@@ -27,10 +27,6 @@ class Answer < ApplicationRecord
     end
   end
 
-  def path
-    "/questions/#{question_id}#answer-#{id}"
-  end
-
   private
 
   def send_new_answer_notice
