@@ -26,7 +26,7 @@ I want to be able to subscribe for email distribution
     scenario 'tries to unsubscribe from answer', js: true do
       expect do
         click_on 'Subscribe'
-        sleep 1
+        visit current_path
         click_on 'Unsubscribe'
       end.to_not change(Subscription, :count)
     end

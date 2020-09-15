@@ -30,7 +30,7 @@ feature 'user can vote for best questions' do
       visit question_path(other_question)
 
       click_on "upvote-question"
-      sleep 1
+      visit current_path
       click_on "upvote-question"
 
       expect(other_question.rating).to eq 0
@@ -40,9 +40,9 @@ feature 'user can vote for best questions' do
       visit question_path(other_question)
 
       click_on "downvote-question"
-      sleep 1
+      visit current_path
       click_on "downvote-question"
-      sleep 1
+      visit current_path
       expect(other_question.rating).to eq 0
     end
 
@@ -60,7 +60,7 @@ feature 'user can vote for best questions' do
 
       click_on "downvote-question"
       click_on "upvote-question"
-      sleep 1
+      visit current_path
       expect(other_question.rating).to eq (1)
     end
 
@@ -130,7 +130,7 @@ feature 'user can vote for best answers' do
       within("#answer-#{answer.id}") do
         click_on "\u2B06"
       end
-      sleep 1
+      visit current_path
       expect(answer.rating).to eq 1
     end
 
@@ -149,7 +149,7 @@ feature 'user can vote for best answers' do
 
       within("#answer-#{answer.id}") do
         click_on "\u2B06"
-        sleep 1
+        visit current_path
         click_on "\u2B06"
       end
 
@@ -161,9 +161,9 @@ feature 'user can vote for best answers' do
 
       within("#answer-#{answer.id}") do
         click_on "\u2B07"
-        sleep 1
+        visit current_path
         click_on "\u2B07"
-        sleep 1
+        visit current_path
       end
 
       expect(answer.rating).to eq 0
@@ -185,7 +185,7 @@ feature 'user can vote for best answers' do
 
       within("#answer-#{answer.id}") do
         click_on "\u2B07"
-        sleep 1
+        visit current_path
         click_on "\u2B06"
       end
 

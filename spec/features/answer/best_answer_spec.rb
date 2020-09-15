@@ -20,7 +20,7 @@ I'd like to be able to flag best answer
     scenario 'first time tries to mark best', js: true do
       within "#answer-#{first_answer.id}" do
         click_link 'Best'
-        sleep 1
+        visit current_path
         expect(first_answer.reload.best).to be_truthy
         expect(page.find_link('Best')[:class]).to eq 'btn best btn-success'
       end
@@ -33,7 +33,7 @@ I'd like to be able to flag best answer
 
       within "#answer-#{second_answer.id}" do
         click_link 'Best'
-        sleep 1
+        visit current_path
         expect(first_answer.reload.best).to be_falsey
         expect(second_answer.reload.best).to be_truthy
         expect(page.find_link('Best')[:class]).to eq 'btn best btn-success'
