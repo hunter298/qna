@@ -64,7 +64,7 @@ gem 'active_model_serializers', '~>0.10'
 gem 'oj', '3.3.6'
 
 # background jobs engine
-gem 'sidekiq'
+gem 'sidekiq', '~> 5.2'
 gem 'sinatra', require: false
 
 gem 'whenever', require: false
@@ -82,12 +82,6 @@ group :development, :test do
   gem 'rspec-rails', '~>4.0'
   gem 'rails-controller-testing'
   gem 'factory_bot_rails'
-
-  gem 'capistrano', require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-rails', require: false
-  gem 'capistrano-rvm', require: false
-  gem 'capistrano-passenger', require: false
 end
 
 group :development do
@@ -98,6 +92,13 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'letter_opener'
+
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
+  gem 'capistrano-sidekiq', require: false
 end
 
 group :test do
