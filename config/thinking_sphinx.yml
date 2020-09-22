@@ -1,2 +1,8 @@
 test:
   mysql41: 9307
+
+production:
+  pid_file: /home/deployer/qna/shared/tmp/searchd.pid
+  indices_location: /path/to/app/shared/db/sphinx
+  configuration_file: /path/to/app/shared/production.sphinx.conf
+  binlog_path: /path/to/app/shared/binlog
