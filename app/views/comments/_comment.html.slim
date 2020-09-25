@@ -1,4 +1,5 @@
-li class="list-group-item"
-  p
-    span style="color:blue" = "#{comment.user.email}: "
-    = comment.body
+- cache comment do
+  li class="list-group-item"
+    p
+      span style="color:blue" = "#{comment.user.email}: "
+      = comment.body

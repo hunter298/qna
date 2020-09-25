@@ -4,7 +4,7 @@
       .rating.col-12.col-md-2
         table align="right"
           tr
-            - unless current_user&.author_of?(answer)
+            - unless can? :edit, answer
               td
                 h2 class="answer-upvote"
                   = link_to "\u2B06", upvote_answer_path(answer),
@@ -12,11 +12,12 @@
                           method: :patch,
                           remote: true,
                           data: {format: :json, answer_id: answer.id}
+          - cache ['rating_for', answer] do
+            tr
+              td align="center"
+                = content_tag :h2, answer.votes.sum(:useful), class: "answer-#{answer.id}-rating-counter"
           tr
-            td align="center"
-              = content_tag :h2, answer.votes.sum(:useful), class: "answer-#{answer.id}-rating-counter"
-          tr
-            - unless current_user&.author_of?(answer)
+            - unless can? :edit, answer
               td
                 h2 class="answer-downvote"
                   = link_to "\u2B07", downvote_answer_path(answer),
@@ -24,17 +25,19 @@
                           method: :patch,
                           remote: true,
                           data: {type: :json, answer_id: answer.id}
-      .col-12.col-md-8
-        p = answer.body
+      - cache ['body_for', answer] do
+        .col-12.col-md-8
+          p = answer.body
       .col-12.col-md-2
-        - if current_user&.author_of?(answer.question)
+        - if can? :edit, (answer.question)
           = link_to 'Best', best_answer_path(answer),
                   method: :post, data: {remote: true},
                   class: answer.best ? 'btn best btn-success' : 'btn best btn-secondary'
-      .links.col-12
-        p Links
-        ul
-          = render answer.links
+      - cache ['links_for', answer] do
+        .links.col-12
+          p Links
+          ul
+            = render answer.links
       .col-12.answer-files
         = render 'shared/files', resource: answer
       .col-12
@@ -49,22 +52,24 @@
           = link_to 'Edit', '#',
                   class: "edit-answer-link",
                   data: {answer_id: answer.id}
-        = form_with model: answer, class: 'hidden', html: {id: "edit-answer-#{answer.id}"} do |form|
-          p = form.text_field :body
-          p = form.file_field :files, multiple: true
-          p Links:
-          #links
-            = form.fields_for :links do |link|
-              = render 'link_fields', f: link
-            .links
-              = link_to_add_association 'add link', form, :links
-          p = form.submit 'Save'
+        - cache ['edit_form_for', answer] do
+          = form_with model: answer, class: 'hidden', html: {id: "edit-answer-#{answer.id}"} do |form|
+            p = form.text_field :body
+            p = form.file_field :files, multiple: true
+            p Links:
+            #links
+              = form.fields_for :links do |link|
+                = render 'link_fields', f: link
+              .links
+                = link_to_add_association 'add link', form, :links
+            p = form.submit 'Save'
       .col-12
 
-      .col-12.comments
-        p Comments:
-        ul class="answer-comments-list list-group"
-          = render answer.comments.persisted
-        = render 'comments/form', commentable: answer, comment: answer.comments.new
+      - cache ['comments_for', answer] do
+        .col-12.comments
+          p Comments:
+          ul class="answer-comments-list list-group"
+            = render answer.comments.persisted
+          = render 'comments/form', commentable: answer, comment: answer.comments.new
 
         hr

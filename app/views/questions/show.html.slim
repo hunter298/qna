@@ -1,12 +1,13 @@
 .container.question
   .row
-    .col-12.col-md-8
-      h2 class="question-title" = question.title
-    - if current_user&.author_of?(question)
+    - cache ['title_for', question] do
+      .col-12.col-md-8
+        h2 class="question-title" = question.title
+    - if can? :edit, question
       .col-12.col-md-4
         .d-flex.flex-row-reverse
           = link_to 'Edit question', '#', class: 'ask-button edit-question'
-
+  - cache ['when_asked', question] do
   .row
     .col
       p class="question-asked"
@@ -15,15 +16,16 @@
   hr
 
   .row
-    .col-12.col-md-10
-      h4 class="question-body" = question.body
-      .question-files
-        - if question.files.attached?
-          = render 'shared/files', resource: question
+    - cache ['body_for', question] do
+      .col-12.col-md-10
+        h4 class="question-body" = question.body
+        .question-files
+          - if question.files.attached?
+            = render 'shared/files', resource: question
     .rating.col-12.col-md-2
       table align="right"
         tr
-          - unless current_user&.author_of?(question)
+          - unless can? :edit, question
             td
               h2 class="question-upvote"
                 = link_to "\u2B06", upvote_question_path,
@@ -31,11 +33,12 @@
                         method: :patch,
                         remote: true,
                         data: {format: :json}
+        - cache ['rating_for', question] do
+          tr
+            td align="center"
+              h2 class="question-rating-counter" = question.votes.sum(:useful)
         tr
-          td align="center"
-            h2 class="question-rating-counter" = question.votes.sum(:useful)
-        tr
-          - unless current_user&.author_of?(question)
+          - unless can? :edit, question
             td
               h2 class="question-downvote"
                 = link_to "\u2B07", downvote_question_path,
@@ -73,11 +76,11 @@
                 id: 'unsubscribe-from-answers',
                 class: 'btn btn-primary hidden'
 
-
-  .question-links
-    p Links
-    ul
-      = render question.links
+  - cache ['links_for', question] do
+    .question-links
+      p Links
+      ul
+        = render question.links
 
 
   .question-errors
@@ -107,17 +110,19 @@
 
       = form.submit class: 'btn btn-primary'
 
-  .question-comments
-    p Comments:
-    ul class="question-comments-list list-group"
-      = render question.comments.persisted
-    = render 'comments/form', commentable: question, comment: question.comments.new
+  - cache ['comments_for', question] do
+    .question-comments
+      p Comments:
+      ul class="question-comments-list list-group"
+        = render question.comments.persisted
+      = render 'comments/form', commentable: question, comment: question.comments.new
 
-  .row
-    .col
-      h3 = "#{question.answers.count} Answers:"
-  .answers
-    = render question.answers.where(best: true)
-    = render question.answers.where(best: false)
+  - cache ['answers_for', question] do
+    .row
+      .col
+        h3 = "#{question.answers.count} Answers:"
+    .answers
+      = render question.answers.where(best: true)
+      = render question.answers.where(best: false)
 
   = render 'answers/form', answer: question.answers.new
