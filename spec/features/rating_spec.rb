@@ -141,6 +141,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B07"
       end
 
+      visit current_path
       expect(answer.rating).to eq -1
     end
 

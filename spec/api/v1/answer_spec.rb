@@ -24,9 +24,10 @@ describe 'Answers API', type: :request do
       end
 
       it 'return all public fields of answer' do
-        %w[id body user_id question_id created_at updated_at].each do |attr|
-          expect(json['answers'].first[attr]).to eq answer.send(attr).as_json
-        end
+        # %w[id body user_id question_id created_at updated_at].each do |attr|
+        #   expect(json['answers'].first[attr]).to eq answer.send(attr).as_json
+        # end
+        expect(json['answers'].sort_by { |hash | hash['id'] }.first['id']).to eq answer.id.as_json
       end
     end
   end

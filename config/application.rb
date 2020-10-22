@@ -21,7 +21,7 @@ module Qna
     config.active_job.queue_adapter = :sidekiq
     config.generators do |g|
       g.test_framework :rspec,
-                       view_specs: false,rorqna
+                       view_specs: false,
                        helper_specs: false,
                        routing_specs: false,
                        request_specs: false

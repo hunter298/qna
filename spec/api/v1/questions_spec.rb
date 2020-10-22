@@ -15,7 +15,7 @@ describe 'Questions API', type: :request do
       let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 2, user: user) }
       let(:question) { questions.first }
-      let(:question_response) { json['questions'].first }
+      let(:question_response) { json['questions'].sort_by { |hash | hash['id'] }.first }
       let!(:answers) { create_list(:answer, 3, question: question, user: user) }
 
       before { get api_path, params: {access_token: access_token.token}, headers: headers }
@@ -44,7 +44,7 @@ describe 'Questions API', type: :request do
 
       describe 'answers' do
         let(:answer) { answers.first }
-        let(:answer_response) { question_response['answers'].first }
+        let(:answer_response) { question_response['answers'].sort_by { |hash | hash['id'] }.first }
 
         it 'returns list of answers' do
           expect(question_response['answers'].length).to eq 3
