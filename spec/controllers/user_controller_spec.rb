@@ -13,7 +13,9 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'creates new authorization' do
-        expect { post :oauth_email_confirmation, params: { email: 'test@example.com' } }.to change(Authorization, :count).by(1)
+        expect do
+          post :oauth_email_confirmation, params: { email: 'test@example.com' }
+        end.to change(Authorization, :count).by(1)
       end
 
       it 'redirects to root path in case of successfull registration' do
@@ -30,7 +32,9 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'does not create new authorization' do
-        expect { post :oauth_email_confirmation, params: { email: 'test@example.com' } }.to_not change(Authorization, :count)
+        expect do
+          post :oauth_email_confirmation, params: { email: 'test@example.com' }
+        end.to_not change(Authorization, :count)
       end
 
       it 'render page again with error message' do

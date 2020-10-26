@@ -4,7 +4,7 @@ class Link < ApplicationRecord
   validates :name, :url, presence: true
   validates :url, url: true
 
-  def is_gist?
+  def gist?
     url =~ /gist.github.com/
   end
 

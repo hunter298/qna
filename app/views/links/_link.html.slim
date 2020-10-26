@@ -1,5 +1,5 @@
 - cache link do
-  - if link.is_gist?
+  - if link.gist?
     li = link.gist
   - else
     li = link_to link.name, link.url, target: "_blank"

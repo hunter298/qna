@@ -26,7 +26,7 @@ RSpec.describe Answer, type: :model do
     end
 
     it 'makes all other answer not best' do
-      answers.each { |answer| answer.is_best! }
+      answers.each(&:is_best!)
 
       expect(answers[0].reload.best).to be_falsey
     end
@@ -35,7 +35,7 @@ RSpec.describe Answer, type: :model do
       it 'should have only one best answer' do
         answers[0].is_best!
         answers[1].is_best!
-        expect(question.answers.select { |answer| answer.best }.count).to eq 1
+        expect(question.answers.select(&:best).count).to eq 1
       end
     end
   end

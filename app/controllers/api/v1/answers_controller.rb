@@ -4,8 +4,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def index
     authorize! :read, Answer
-    @question = Question.find(params[:question_id])
-    @answers = @question.answers
+    @answers = question.answers
     render json: @answers, adapter: :json, each_serializer: ListAnswerSerializer
   end
 
@@ -17,8 +16,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def create
     authorize! :create, Answer
-    @question = Question.find(params[:question_id])
-    @answer = @question.answers.new(answer_params.merge(user: current_resource_owner))
+    @answer = question.answers.new(answer_params.merge(user: current_resource_owner))
 
     respond_to do |format|
       format.json do
@@ -59,6 +57,10 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   private
+
+  def question
+    @question ||= Question.find(params[:question_id])
+  end
 
   def answer_params
     if action_name == 'create'

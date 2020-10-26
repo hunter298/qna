@@ -4,7 +4,9 @@ shared_examples_for 'API creatable' do
 
     context 'valid data' do
       before do
-        post api_path, params: { creatable => { title: 'some title', body: 'some body' }, access_token: access_token.token }, headers: headers
+        post api_path,
+             params: { creatable => { title: 'some title', body: 'some body' }, access_token: access_token.token },
+             headers: headers
       end
 
       it 'returns :created status' do

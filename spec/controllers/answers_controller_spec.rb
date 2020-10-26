@@ -9,7 +9,9 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
       context 'with valid attributes' do
         it 'save new answer to database' do
-          expect { post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js }.to change(Answer, :count).by(1)
+          expect do
+            post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
+          end.to change(Answer, :count).by(1)
         end
 
         it 'renders create template' do
@@ -26,7 +28,9 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'with invalid attributes' do
         it 'does not save answer to database' do
-          expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js }.to_not change(Answer, :count)
+          expect do
+            post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
+          end.to_not change(Answer, :count)
         end
 
         it 'renders create template' do
@@ -39,7 +43,9 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'unauthorized user' do
       it 'does not save any answer' do
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to_not change(Answer, :count)
+        expect do
+          post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        end.to_not change(Answer, :count)
       end
 
       it 'redirects to login page' do
@@ -113,7 +119,9 @@ RSpec.describe AnswersController, type: :controller do
           sign_in(user)
 
           expect do
-            patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+            patch :update,
+                  params: { id: answer, answer: attributes_for(:answer, :invalid) },
+                  format: :js
           end.to_not change(answer, :body)
         end
 

@@ -5,7 +5,7 @@ module Votable
     has_many :votes, as: :votable, dependent: :destroy
 
     def upvote(user)
-      if vote = votes.find_by(user: user)
+      if (vote = votes.find_by(user: user))
         vote.useful == 1 ? vote.destroy : vote.update(useful: 1)
       else
         votes.create(user: user, useful: 1)
@@ -13,7 +13,7 @@ module Votable
     end
 
     def downvote(user)
-      if vote = votes.find_by(user: user)
+      if (vote = votes.find_by(user: user))
         vote.useful == -1 ? vote.destroy : vote.update(useful: -1)
       else
         votes.create(user: user, useful: -1)
