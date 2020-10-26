@@ -8,18 +8,18 @@ module Voted
     authorize! :upvote, @votable
     respond_to do |format|
       format.json do
-          @votable.upvote(current_user)
-          render json: @votable.rating
-        end
+        @votable.upvote(current_user)
+        render json: @votable.rating
       end
+    end
   end
 
   def downvote
     authorize! :downvote, @votable
     respond_to do |format|
       format.json do
-          @votable.downvote(current_user)
-          render json: @votable.rating
+        @votable.downvote(current_user)
+        render json: @votable.rating
       end
     end
   end

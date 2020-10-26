@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'user can view the list of questions', %q{
+feature 'user can view the list of questions', '
 In order to solve his problem
 any visitor of the site
 can overlook the list of all questions
-} do
-
+' do
   given!(:user) { create(:user) }
   given!(:questions) { create_list(:question, 5, user: user) }
 

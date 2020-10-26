@@ -18,7 +18,7 @@ RSpec.describe Question, type: :model do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
-  describe "#upvote" do
+  describe '#upvote' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
 
@@ -29,29 +29,28 @@ RSpec.describe Question, type: :model do
     end
 
     it 'should not change rating after two applying' do
-        question.upvote(user)
-        question.upvote(user)
+      question.upvote(user)
+      question.upvote(user)
 
-        expect(question.rating).to eq 0
+      expect(question.rating).to eq 0
     end
   end
 
-  describe "#downvote" do
+  describe '#downvote' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
 
     it 'should decrease rating by 1' do
       question.downvote(user)
 
-      expect(question.rating).to eq -1
+      expect(question.rating).to eq(-1)
     end
 
     it 'should not change rating after two applying' do
-        question.downvote(user)
-        question.downvote(user)
+      question.downvote(user)
+      question.downvote(user)
 
-        expect(question.rating).to eq 0
+      expect(question.rating).to eq 0
     end
   end
 end
-

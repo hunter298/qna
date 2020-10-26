@@ -46,5 +46,4 @@ RSpec.describe OauthCallbacksController, type: :controller do
       end
     end
   end
-
 end

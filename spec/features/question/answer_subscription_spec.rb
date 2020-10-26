@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'user can subscribe for new answer', %q{
+feature 'user can subscribe for new answer', '
 in order to receive new answers for concerning question
 as an authorized user
 I want to be able to subscribe for email distribution
-} do
-
+' do
   given(:author) { create(:user) }
   given(:user) { create(:user) }
   given(:question) { create(:question, user: author) }

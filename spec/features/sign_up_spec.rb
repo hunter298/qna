@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-feature 'user can sign up', %q{
+feature 'user can sign up', '
 in order to use all functionality of  application
 any unauthenticated user
 can sign up to be able to log in
-} do
+' do
   background do
     visit new_user_registration_path
   end
 
   context 'new user' do
     given(:user) { build(:user) }
-    given(:user_invalid) { build(:user, :invalid)}
+    given(:user_invalid) { build(:user, :invalid) }
 
     scenario 'tries to register with valid data' do
       fill_in 'Email', with: user.email
@@ -46,5 +46,4 @@ can sign up to be able to log in
       expect(page).to have_content 'Email has already been taken'
     end
   end
-
 end

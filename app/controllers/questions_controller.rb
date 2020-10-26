@@ -47,7 +47,6 @@ class QuestionsController < ApplicationController
     question.destroy
   end
 
-
   private
 
   def question
@@ -59,15 +58,16 @@ class QuestionsController < ApplicationController
   def question_params
     if action_name == 'create'
       params.require(:question).permit(:title, :body, files: [],
-                                       links_attributes: [:id, :name, :url, :_destroy],
-                                       badge_attributes: [:name, :icon])
+                                                      links_attributes: %i[id name url _destroy],
+                                                      badge_attributes: %i[name icon])
     else
-      params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy])
+      params.require(:question).permit(:title, :body, links_attributes: %i[id name url _destroy])
     end
   end
 
   def publish_question
     return if @question.errors.any?
+
     ActionCable.server.broadcast 'questions', @question
   end
 end

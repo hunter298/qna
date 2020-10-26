@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe 'Profiles API', type: :request do
-  let(:headers) { {"CONTENT-TYPE" => "application/json",
-                   "ACCEPT" => 'application/json'} }
+  let(:headers) do
+    { 'CONTENT-TYPE' => 'application/json',
+      'ACCEPT' => 'application/json' }
+  end
 
   describe 'GET /api/v1/profiles/me' do
     let(:api_path) { '/api/v1/profiles/me' }
@@ -14,7 +16,7 @@ describe 'Profiles API', type: :request do
       let(:me) { create(:user) }
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-      before { get api_path, params: {access_token: access_token.token}, headers: headers }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'returns 200 status' do
         expect(response).to be_successful
@@ -46,7 +48,7 @@ describe 'Profiles API', type: :request do
     context 'authorized' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-      before { get api_path, params: {access_token: access_token.token}, headers: headers }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'returns 200 status' do
         expect(response).to be_successful
@@ -73,5 +75,4 @@ describe 'Profiles API', type: :request do
       end
     end
   end
-
 end

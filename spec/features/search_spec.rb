@@ -1,10 +1,10 @@
 require 'sphinx_helper'
 
-feature 'user can search for entries', %q{
+feature 'user can search for entries', '
 in order to find interesting entries by keyword
 as an visitor of site
 I want to be able to use full-text search
-# } do
+# ' do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user, title: 'Keyword_question') }
   given!(:answer) { create(:answer, user: user, question: question, body: 'Keyword_answer') }

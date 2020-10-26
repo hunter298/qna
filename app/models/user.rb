@@ -10,7 +10,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:github, :facebook]
+         :omniauthable, omniauth_providers: %i[github facebook]
 
   def self.find_for_oauth(auth)
     FindForOauthService.new(auth).call

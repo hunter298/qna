@@ -23,7 +23,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
         if @question.save
           render json: @question, adapter: :json, status: :created
         else
-          render json: {errors: @question.errors.full_messages}, status: :unprocessable_entity
+          render json: { errors: @question.errors.full_messages }, status: :unprocessable_entity
         end
       end
     end
@@ -35,7 +35,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     respond_to do |format|
       format.json do
         @question.destroy
-        render json: {message: 'Question deleted'}, status: :ok
+        render json: { message: 'Question deleted' }, status: :ok
       end
     end
   end
@@ -52,7 +52,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     if @question.update(question_params)
       render json: @question, adapter: :json
     else
-      render json: {error: @question.errors.full_messages}, status: :unprocessable_entity
+      render json: { error: @question.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -60,10 +60,10 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def question_params
     if action_name == 'create'
-      params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy],
-                                       badge_attributes: [:name, :icon])
+      params.require(:question).permit(:title, :body, links_attributes: %i[id name url _destroy],
+                                                      badge_attributes: %i[name icon])
     else
-      params.require(:question).permit(:title, :body, links_attributes: [:id, :name, :url, :_destroy])
+      params.require(:question).permit(:title, :body, links_attributes: %i[id name url _destroy])
     end
   end
 end

@@ -16,8 +16,8 @@ RSpec.describe Ability, type: :model do
     let!(:answer) { create(:answer, question: question, user: user) }
 
     before do
-      question.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", "w+"), filename: 'test-file.txt')
-      answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", "w+"), filename: 'test-file.txt')
+      question.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", 'w+'), filename: 'test-file.txt')
+      answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", 'w+'), filename: 'test-file.txt')
     end
 
     it { should be_able_to :read, :all }
@@ -43,6 +43,6 @@ RSpec.describe Ability, type: :model do
 
   describe 'guest abilities' do
     let(:user) { build(:user) }
-    it { should be_able_to :oauth_email_confirmation, User, user: user}
+    it { should be_able_to :oauth_email_confirmation, User, user: user }
   end
 end

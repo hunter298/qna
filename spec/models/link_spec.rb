@@ -6,7 +6,7 @@ RSpec.describe Link, type: :model do
   it { should validate_presence_of :name }
   it { should validate_presence_of :url }
 
-  describe "Link#is_gist?" do
+  describe 'Link#is_gist?' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
     let!(:link) { create(:link, linkable: question, name: 'gist', url: 'https://gist.github.com/hunter298/0b36c45df3e2a79aed5a178e6cca01ac') }
@@ -21,7 +21,7 @@ RSpec.describe Link, type: :model do
     end
   end
 
-  describe "Link#gist" do
+  describe 'Link#gist' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
     let!(:link) { create(:link, linkable: question, name: 'gist', url: 'https://gist.github.com/hunter298/0b36c45df3e2a79aed5a178e6cca01ac') }

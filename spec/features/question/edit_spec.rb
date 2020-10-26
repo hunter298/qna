@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'user can edit his questions', %q{
+feature 'user can edit his questions', "
 in order to correct mistakes
 as a creator of question
 i'd like to be able to edit it
-} do
-
+" do
   given(:user) { create(:user) }
   given(:other_user) { create(:user) }
   given!(:question) { create(:question, user: user) }
@@ -95,7 +94,6 @@ i'd like to be able to edit it
       expect(page).to_not have_link 'test', href: 'http://test.link'
     end
   end
-
 
   scenario 'unauthenticated user tries to edit question' do
     visit question_path(question)

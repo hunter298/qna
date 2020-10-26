@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'user can delete question', %q{
+feature 'user can delete question', '
 in order to remove redundant or unnecessary question
 registered user
 should be able to delete question, created by him
-} do
-
+' do
   given(:users) { create_list(:user, 2) }
   given!(:question) { create(:question, user: users[0]) }
   given!(:other_question) { create(:question, user: users[1]) }

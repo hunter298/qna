@@ -25,7 +25,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
         if @answer.save
           render json: @answer, adapter: :json, status: :created
         else
-          render json: {errors: @answer.errors.full_messages}, status: :unprocessable_entity
+          render json: { errors: @answer.errors.full_messages }, status: :unprocessable_entity
         end
       end
     end
@@ -37,7 +37,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
     respond_to do |format|
       format.json do
         @answer.destroy
-        render json: {message: 'Answer deleted'}, status: :ok
+        render json: { message: 'Answer deleted' }, status: :ok
       end
     end
   end
@@ -54,7 +54,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
     if @answer.update(answer_params)
       render json: @answer, adapter: :json
     else
-      render json: {error: @answer.errors.full_messages}, status: :unprocessable_entity
+      render json: { error: @answer.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -62,9 +62,9 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def answer_params
     if action_name == 'create'
-      params.require(:answer).permit(:body, links_attributes: [:name, :url])
+      params.require(:answer).permit(:body, links_attributes: %i[name url])
     else
-      params.require(:answer).permit(:body, links_attributes: [:id, :name, :url, :_destroy])
+      params.require(:answer).permit(:body, links_attributes: %i[id name url _destroy])
     end
   end
 end

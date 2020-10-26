@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'user can edit his answer', %q{
+feature 'user can edit his answer', "
 in order to correct mistakes
 as an author if answer,
 I'd like to be able to edit my answer
-} do
-
+" do
   given(:user) { create(:user) }
   given(:other_user) { create(:user) }
   given(:question) { create(:question, user: user) }
@@ -47,7 +46,7 @@ I'd like to be able to edit my answer
       expect(page).to have_content "Body can't be blank"
     end
 
-    scenario "tries to edit some other user answer" do
+    scenario 'tries to edit some other user answer' do
       click_on 'Log out'
       sign_in(other_user)
       visit question_path(question)
@@ -99,6 +98,5 @@ I'd like to be able to edit my answer
 
       expect(page).to_not have_link 'test', href: 'http://test.link'
     end
-
   end
 end

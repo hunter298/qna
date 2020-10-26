@@ -1,14 +1,14 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  authenticate :user, lambda { |u| u.admin? } do
+  authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
-  
+
   use_doorkeeper
   root to: 'questions#index'
 
-  devise_for :users, controllers: {omniauth_callbacks: 'oauth_callbacks'}
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
   post '/oauth_email_confirmation', to: 'users#oauth_email_confirmation'
 
   get '/search', to: 'searches#search'

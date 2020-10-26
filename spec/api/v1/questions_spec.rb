@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Questions API', type: :request do
-  let(:headers) { {"ACCEPT" => 'application/json'} }
+  let(:headers) { { 'ACCEPT' => 'application/json' } }
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
 
@@ -15,10 +15,10 @@ describe 'Questions API', type: :request do
       let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 2, user: user) }
       let(:question) { questions.first }
-      let(:question_response) { json['questions'].sort_by { |hash | hash['id'] }.first }
+      let(:question_response) { json['questions'].min_by { |hash| hash['id'] } }
       let!(:answers) { create_list(:answer, 3, question: question, user: user) }
 
-      before { get api_path, params: {access_token: access_token.token}, headers: headers }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'returns 200 status' do
         expect(response.status).to eq 200
@@ -44,7 +44,7 @@ describe 'Questions API', type: :request do
 
       describe 'answers' do
         let(:answer) { answers.first }
-        let(:answer_response) { question_response['answers'].sort_by { |hash | hash['id'] }.first }
+        let(:answer_response) { question_response['answers'].min_by { |hash| hash['id'] } }
 
         it 'returns list of answers' do
           expect(question_response['answers'].length).to eq 3
@@ -72,7 +72,7 @@ describe 'Questions API', type: :request do
       let!(:links) { create_list(:link, 3, linkable: question) }
       let!(:comment) { create_list(:comment, 3, commentable: question, user: user) }
 
-      before { get api_path, params: {access_token: access_token.token}, headers: headers }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'returns 200 status' do
         expect(response).to be_successful
@@ -102,7 +102,7 @@ describe 'Questions API', type: :request do
     end
   end
 
-  describe "DELETE /api/v1/questions/:id" do
+  describe 'DELETE /api/v1/questions/:id' do
     let(:api_path) { "/api/v1/questions/#{question.id}" }
 
     it_behaves_like 'API authorizable' do
@@ -121,9 +121,9 @@ describe 'Questions API', type: :request do
       let(:admin_token) { create(:access_token, resource_owner_id: admin.id) }
 
       it 'should be able to delete other user question' do
-        expect {
-          delete "/api/v1/questions/#{other_question.id}", params: {access_token: admin_token.token}, headers: headers
-        }.to change(Question, :count).by(-1)
+        expect do
+          delete "/api/v1/questions/#{other_question.id}", params: { access_token: admin_token.token }, headers: headers
+        end.to change(Question, :count).by(-1)
       end
     end
   end

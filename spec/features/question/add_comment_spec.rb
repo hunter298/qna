@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-feature 'user can add comments to question', %q{
+feature 'user can add comments to question', "
 in order to clarify some moments
 as an authenticated user
 I'd like to be able to leave comments to question
-} do
+" do
   given(:user) { create(:user) }
-  given(:question) {create(:question, user: user) }
+  given(:question) { create(:question, user: user) }
 
   context 'authenticated user' do
     background do

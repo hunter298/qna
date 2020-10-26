@@ -4,7 +4,7 @@ FactoryBot.define do
   end
 
   factory :link do
-    name { "link" }
+    name { 'link' }
     url
 
     trait :invalid do

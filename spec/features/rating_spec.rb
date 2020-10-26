@@ -13,7 +13,7 @@ feature 'user can vote for best questions' do
     scenario "tries to upvote other user's question", js: true do
       visit question_path(other_question)
 
-      click_on "upvote-question"
+      click_on 'upvote-question'
 
       expect(other_question.rating).to eq 1
     end
@@ -21,17 +21,17 @@ feature 'user can vote for best questions' do
     scenario "tries to downvote other user's question", js: true do
       visit question_path(other_question)
 
-      click_on "downvote-question"
+      click_on 'downvote-question'
 
-      expect(other_question.rating).to eq -1
+      expect(other_question.rating).to eq(-1)
     end
 
     scenario "tries to upvote other user's question twice", js: true do
       visit question_path(other_question)
 
-      click_on "upvote-question"
+      click_on 'upvote-question'
       visit current_path
-      click_on "upvote-question"
+      click_on 'upvote-question'
 
       expect(other_question.rating).to eq 0
     end
@@ -39,9 +39,9 @@ feature 'user can vote for best questions' do
     scenario "tries to downvote other user's question twice", js: true do
       visit question_path(other_question)
 
-      click_on "downvote-question"
+      click_on 'downvote-question'
       visit current_path
-      click_on "downvote-question"
+      click_on 'downvote-question'
       visit current_path
       expect(other_question.rating).to eq 0
     end
@@ -49,19 +49,19 @@ feature 'user can vote for best questions' do
     scenario 'tries to downvote question after upvoting', js: true do
       visit question_path(other_question)
 
-      click_on "upvote-question"
-      click_on "downvote-question"
+      click_on 'upvote-question'
+      click_on 'downvote-question'
 
-      expect(other_question.rating).to eq (-1)
+      expect(other_question.rating).to eq(-1)
     end
 
     scenario 'tries to upvote question after downvoting', js: true do
       visit question_path(other_question)
 
-      click_on "downvote-question"
-      click_on "upvote-question"
+      click_on 'downvote-question'
+      click_on 'upvote-question'
       visit current_path
-      expect(other_question.rating).to eq (1)
+      expect(other_question.rating).to eq(1)
     end
 
     scenario 'tries to upvote own quesiton' do
@@ -81,7 +81,7 @@ feature 'user can vote for best questions' do
     scenario "tries to upvote other user's question", js: true do
       visit question_path(question)
 
-      click_on "upvote-question"
+      click_on 'upvote-question'
 
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
       expect(question.rating).to eq 0
@@ -90,7 +90,7 @@ feature 'user can vote for best questions' do
     scenario "tries to downvote other user's question", js: true do
       visit question_path(question)
 
-      click_on "downvote-question"
+      click_on 'downvote-question'
 
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
       expect(question.rating).to eq 0
@@ -101,13 +101,13 @@ feature 'user can vote for best questions' do
     sign_in(user)
     visit question_path(other_question)
 
-    click_on "upvote-question"
-    click_on "Log out"
+    click_on 'upvote-question'
+    click_on 'Log out'
 
     sign_in(create(:user))
     visit question_path(other_question)
 
-    click_on "upvote-question"
+    click_on 'upvote-question'
 
     expect(page).to have_selector('.question-rating-counter', exact_text: '2')
   end
@@ -142,7 +142,7 @@ feature 'user can vote for best answers' do
       end
 
       visit current_path
-      expect(answer.rating).to eq -1
+      expect(answer.rating).to eq(-1)
     end
 
     scenario "tries to upvote other user's answer twice", js: true do
@@ -178,7 +178,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B07"
       end
 
-      expect(answer.rating).to eq (-1)
+      expect(answer.rating).to eq(-1)
     end
 
     scenario 'tries to upvote answer after downvoting', js: true do
@@ -190,7 +190,7 @@ feature 'user can vote for best answers' do
         click_on "\u2B06"
       end
 
-      expect(answer.rating).to eq (1)
+      expect(answer.rating).to eq(1)
     end
 
     scenario 'tries to upvote own answer' do
@@ -241,7 +241,7 @@ feature 'user can vote for best answers' do
     within("#answer-#{answer.id}") do
       click_on "\u2B06"
     end
-    click_on "Log out"
+    click_on 'Log out'
 
     sign_in(create(:user))
     visit question_path(question)

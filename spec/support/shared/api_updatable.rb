@@ -6,8 +6,8 @@ shared_examples_for 'API updatable' do
       context 'with valid data' do
         before do
           do_request :patch, api_path, params: {
-              access_token: access_token.token,
-              updatable => {body: 'new body'}
+            access_token: access_token.token,
+            updatable => { body: 'new body' }
           }, headers: headers
         end
 
@@ -33,8 +33,8 @@ shared_examples_for 'API updatable' do
       context 'with invalid data' do
         before do
           do_request :patch, api_path, params: {
-              access_token: access_token.token,
-              updatable => {body: ''}
+            access_token: access_token.token,
+            updatable => { body: '' }
           }, headers: headers
         end
 
@@ -53,8 +53,8 @@ shared_examples_for 'API updatable' do
 
       before do
         do_request :patch, api_path, params: {
-            access_token: access_token.token,
-            updatable => {body: 'new body'}
+          access_token: access_token.token,
+          updatable => { body: 'new body' }
         }, headers: headers
       end
 

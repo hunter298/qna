@@ -15,7 +15,6 @@ class Ability
     end
   end
 
-
   def admin_abilities
     can :manage, :all
   end

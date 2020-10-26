@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-feature 'user can sign out', %q{
+feature 'user can sign out', '
 in order to terminate my user session
 I, as authorized user
 want to be able to sign out
-} do
+' do
   given(:user) { create(:user) }
 
   before { sign_in(user) }
 
-  scenario "tries to sign out" do
+  scenario 'tries to sign out' do
     visit root_path
     click_on 'Log out'
 

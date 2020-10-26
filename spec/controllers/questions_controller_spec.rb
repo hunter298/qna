@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
 
@@ -20,7 +19,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before { get :show, params: {id: question} }
+    before { get :show, params: { id: question } }
 
     it 'renders show view' do
       expect(response).to render_template :show
@@ -50,26 +49,26 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'saves new question in database' do
-        expect { post :create, params: {question: attributes_for(:question)} }.to change(Question, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
 
       it 'redirects to show view' do
-        post :create, params: {question: attributes_for(:question)}
+        post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to(assigns(:question))
       end
 
       it 'creates subscription for new answers' do
-        expect { post :create, params: {question: attributes_for(:question)} }.to change(Subscription, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(Subscription, :count).by(1)
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save question in database' do
-        expect { post :create, params: {question: attributes_for(:question, :invalid)} }.to_not change(Question, :count)
+        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
       end
 
       it 're-render new view' do
-        post :create, params: {question: attributes_for(:question, :invalid)}
+        post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template :new
       end
     end
@@ -80,12 +79,12 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
-        patch :update, params: {id: question, question: attributes_for(:question)}, format: :js
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
         expect(assigns(:question)).to eq question
       end
 
       it 'cahnges question attributes' do
-        patch :update, params: {id: question, question: {body: 'new body', title: 'new title'}}, format: :js
+        patch :update, params: { id: question, question: { body: 'new body', title: 'new title' } }, format: :js
         question.reload
 
         expect(question.body).to eq 'new body'
@@ -93,7 +92,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'renders template update' do
-        patch :update, params: {id: question, question: attributes_for(:question)}, format: :js
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
         expect(response).to render_template :update
       end
     end
@@ -103,22 +102,20 @@ RSpec.describe QuestionsController, type: :controller do
         question.reload
 
         expect do
-          patch :update, params: {id: question, question: attributes_for(:question, :invalid)}, format: :js
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
         end.to_not change(question, :title)
 
         expect do
-          patch :update, params: {id: question, question: attributes_for(:question, :invalid)}, format: :js
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
         end.to_not change(question, :body)
       end
 
-
       it 'render update view' do
-        patch :update, params: {id: question, question: attributes_for(:question, :invalid)}, format: :js
+        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
         expect(response).to render_template :update
       end
     end
   end
-
 
   describe 'DELETE #destroy' do
     context 'authorized user' do
@@ -128,11 +125,11 @@ RSpec.describe QuestionsController, type: :controller do
         let!(:question) { create(:question, user: user) }
 
         it 'can delete the question' do
-          expect { delete :destroy, params: {id: question}, format: :js }.to change(Question, :count).by(-1)
+          expect { delete :destroy, params: { id: question }, format: :js }.to change(Question, :count).by(-1)
         end
 
         it 'redirects to index' do
-          delete :destroy, params: {id: question}, format: :js
+          delete :destroy, params: { id: question }, format: :js
           expect(response).to render_template :destroy
         end
       end
@@ -142,11 +139,11 @@ RSpec.describe QuestionsController, type: :controller do
         let!(:other_user) { create(:user) }
         let!(:question) { create(:question, user: other_user) }
         it 'can not delete the question' do
-          expect { delete :destroy, params: {id: question}, format: :js }.to_not change(Question, :count)
+          expect { delete :destroy, params: { id: question }, format: :js }.to_not change(Question, :count)
         end
 
         it 'shows error message' do
-          delete :destroy, params: {id: question}, format: :js
+          delete :destroy, params: { id: question }, format: :js
           expect(response.status).to eq 403
         end
       end
@@ -155,7 +152,7 @@ RSpec.describe QuestionsController, type: :controller do
     context 'unauthorized user' do
       let!(:question) { create(:question, user: user) }
       it 'can not delete question' do
-        expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
     end
   end
@@ -183,6 +180,4 @@ RSpec.describe QuestionsController, type: :controller do
       let(:own_object) { :own_question }
     end
   end
-
-
 end

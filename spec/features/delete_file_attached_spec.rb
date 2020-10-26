@@ -1,18 +1,17 @@
-require 'rails_helper.rb'
+require 'rails_helper'
 
-feature 'user can delete attached files', %{
+feature 'user can delete attached files', %(
 in order to delete wrong or redundant file
 I, as an author of question or answer to which it attached
 want to be able to delete it
-} do
-
+) do
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, user: user, question: question) }
 
   background do
-    question.files.attach(io: File.new("#{Rails.root}/tmp/test-file1.txt", "w+"), filename: 'test-file1.txt')
-    answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file2.txt", "w+"), filename: 'test-file2.txt')
+    question.files.attach(io: File.new("#{Rails.root}/tmp/test-file1.txt", 'w+'), filename: 'test-file1.txt')
+    answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file2.txt", 'w+'), filename: 'test-file2.txt')
   end
 
   describe 'authenticated user' do

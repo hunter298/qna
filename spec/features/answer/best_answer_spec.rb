@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'user can choose best answer', %q{
+feature 'user can choose best answer', "
 in order to mark most useful answer
 as an author of question
 I'd like to be able to flag best answer
-} do
-
+" do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:first_answer) { create(:answer, question: question, user: user) }
@@ -51,6 +50,4 @@ I'd like to be able to flag best answer
 
     expect(page).to_not have_content 'Best'
   end
-
-
 end

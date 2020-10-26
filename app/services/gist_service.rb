@@ -1,5 +1,4 @@
 class GistService
-
   def initialize(gist_url, client = default_client)
     @client = client
     @gist_id = gist_url.match(/\w+$/).to_s

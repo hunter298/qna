@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'user can create answer', %q{
+feature 'user can create answer', "
 in order to help to find solution for other user's question
 registered user
 should be able to create answer
-} do
-
+" do
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
@@ -76,7 +75,6 @@ should be able to create answer
       Capybara.using_session('other_user') do
         expect(page).to have_content 'New answer'
       end
-
     end
   end
 end

@@ -5,34 +5,32 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, user: user) }
 
   describe 'POST #create' do
-
     context 'authorized user' do
       before { login(user) }
       context 'with valid attributes' do
         it 'save new answer to database' do
-          expect { post :create, params: {question_id: question, answer: attributes_for(:answer)}, format: :js }.to change(Answer, :count).by(1)
+          expect { post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js }.to change(Answer, :count).by(1)
         end
 
         it 'renders create template' do
-          post :create, params: {question_id: question, answer: attributes_for(:answer)}, format: :js
+          post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
 
           expect(response).to render_template :create
         end
 
         it 'perform NewAnswerNoticeJob' do
           expect(NewAnswerNoticeJob).to receive(:perform_later)
-          post :create, params: {question_id: question, answer: attributes_for(:answer)}, format: :js
+          post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
         end
-
       end
 
       context 'with invalid attributes' do
         it 'does not save answer to database' do
-          expect { post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)}, format: :js }.to_not change(Answer, :count)
+          expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js }.to_not change(Answer, :count)
         end
 
         it 'renders create template' do
-          post :create, params: {question_id: question, answer: attributes_for(:answer, :invalid)}, format: :js
+          post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
 
           expect(response).to render_template :create
         end
@@ -40,13 +38,12 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'unauthorized user' do
-
       it 'does not save any answer' do
-        expect { post :create, params: {question_id: question, answer: attributes_for(:answer)} }.to_not change(Answer, :count)
+        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to_not change(Answer, :count)
       end
 
       it 'redirects to login page' do
-        post :create, params: {question_id: question, answer: attributes_for(:answer)}
+        post :create, params: { question_id: question, answer: attributes_for(:answer) }
 
         expect(response).to redirect_to new_user_session_path
       end
@@ -61,11 +58,11 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'author of answer' do
         it 'erases answer from database' do
-          expect { delete :destroy, params: {id: answer}, format: :js }.to change(Answer, :count).by(-1)
+          expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
         end
 
         it 'redirects to question page' do
-          delete :destroy, params: {id: answer}, format: :js
+          delete :destroy, params: { id: answer }, format: :js
           expect(response).to render_template :destroy
         end
       end
@@ -74,11 +71,11 @@ RSpec.describe AnswersController, type: :controller do
         let!(:other_answer) { create(:answer, question: question, user: create(:user)) }
 
         it 'does not erase answer from database' do
-          expect { delete :destroy, params: {id: other_answer}, format: :js }.to_not change(Answer, :count)
+          expect { delete :destroy, params: { id: other_answer }, format: :js }.to_not change(Answer, :count)
         end
 
         it 'redirects to question page' do
-          delete :destroy, params: {id: answer}, format: :js
+          delete :destroy, params: { id: answer }, format: :js
           expect(response).to render_template :destroy
         end
       end
@@ -86,7 +83,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'unauthorized user' do
       it 'does not erase answer' do
-        expect { delete :destroy, params: {id: answer} }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
     end
   end
@@ -98,7 +95,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'tries to edit answer with valid attributes' do
         before do
           sign_in(user)
-          patch :update, params: {id: answer, answer: {body: 'new body'}}, format: :js
+          patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
         end
 
         it 'changes answer attributes' do
@@ -116,13 +113,13 @@ RSpec.describe AnswersController, type: :controller do
           sign_in(user)
 
           expect do
-            patch :update, params: {id: answer, answer: attributes_for(:answer, :invalid)}, format: :js
+            patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
           end.to_not change(answer, :body)
         end
 
         it 'renders update view' do
           sign_in(user)
-          patch :update, params: {id: answer, answer: attributes_for(:answer, :invalid)}, format: :js
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
 
           expect(response).to render_template :update
         end
@@ -133,7 +130,7 @@ RSpec.describe AnswersController, type: :controller do
       scenario 'tries to edit answer' do
         sign_in(create(:user))
 
-        patch :update, params: {id: answer, answer: {body: 'new body'}}, format: :js
+        patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
         answer.reload
 
         expect(answer.body).to_not eq 'new body'
@@ -152,7 +149,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'should change best attribute of answer to true', js: true do
         sign_in(user)
 
-        post :best, params: {id: answer}, format: :js
+        post :best, params: { id: answer }, format: :js
 
         expect(answer.reload).to be_best
       end
@@ -160,7 +157,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'should change best attribute of other answer to false' do
         sign_in(user)
 
-        post :best, params: {id: answer}, format: :js
+        post :best, params: { id: answer }, format: :js
 
         expect(other_answer.reload.best).to eq false
       end
@@ -168,7 +165,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'should give question badge to answer author' do
         sign_in(user)
 
-        post :best, params: {id: third_answer}, format: :js
+        post :best, params: { id: third_answer }, format: :js
 
         expect(other_user.badges).to include badge
       end
@@ -178,7 +175,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'should not change best attribute of answer' do
         sign_in(other_user)
 
-        post :best, params: {id: answer}, format: :js
+        post :best, params: { id: answer }, format: :js
 
         expect(answer.best).to eq false
       end
@@ -210,5 +207,4 @@ RSpec.describe AnswersController, type: :controller do
       let(:own_object) { :own_answer }
     end
   end
-
 end

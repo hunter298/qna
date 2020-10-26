@@ -44,7 +44,7 @@ RSpec.describe SubscriptionsController, type: :controller do
 
       context 'has subscription' do
         it 'destroys subscription' do
-          expect {delete :destroy, params: { id: subscription }, format: :json}.to change(Subscription, :count).by(-1)
+          expect { delete :destroy, params: { id: subscription }, format: :json }.to change(Subscription, :count).by(-1)
         end
 
         it 'does not redirect anyway' do

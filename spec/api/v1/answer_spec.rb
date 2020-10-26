@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Answers API', type: :request do
-  let(:headers) { {"ACCEPT" => 'application/json'} }
+  let(:headers) { { 'ACCEPT' => 'application/json' } }
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
 
@@ -17,7 +17,7 @@ describe 'Answers API', type: :request do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
       let!(:answer) { answers.first }
 
-      before { get api_path, params: {access_token: access_token.token}, headers: headers }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'returns list of answers' do
         expect(json['answers'].size).to eq 3
@@ -27,7 +27,7 @@ describe 'Answers API', type: :request do
         # %w[id body user_id question_id created_at updated_at].each do |attr|
         #   expect(json['answers'].first[attr]).to eq answer.send(attr).as_json
         # end
-        expect(json['answers'].sort_by { |hash | hash['id'] }.first['id']).to eq answer.id.as_json
+        expect(json['answers'].min_by { |hash| hash['id'] }['id']).to eq answer.id.as_json
       end
     end
   end
@@ -39,8 +39,8 @@ describe 'Answers API', type: :request do
     let(:api_path) { "/api/v1//answers/#{answer.id}" }
 
     before do
-      answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file1.txt", "w+"), filename: 'test-file1.txt')
-      answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file2.txt", "w+"), filename: 'test-file2.txt')
+      answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file1.txt", 'w+'), filename: 'test-file1.txt')
+      answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file2.txt", 'w+'), filename: 'test-file2.txt')
     end
 
     it_behaves_like 'API authorizable' do
@@ -50,7 +50,7 @@ describe 'Answers API', type: :request do
     context 'authorized' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-      before { get api_path, params: {access_token: access_token.token}, headers: headers }
+      before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
       it 'should return 200 status' do
         expect(response).to be_successful
@@ -92,7 +92,7 @@ describe 'Answers API', type: :request do
     end
   end
 
-  describe "DELETE /api/v1/answers/:id" do
+  describe 'DELETE /api/v1/answers/:id' do
     let!(:answer) { create(:answer, user: user, question: question) }
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
 
@@ -112,9 +112,9 @@ describe 'Answers API', type: :request do
       let(:admin_token) { create(:access_token, resource_owner_id: admin.id) }
 
       it 'should be able to delete other user question' do
-        expect {
-          delete "/api/v1/answers/#{other_answer.id}", params: {access_token: admin_token.token}, headers: headers
-        }.to change(Answer, :count).by(-1)
+        expect do
+          delete "/api/v1/answers/#{other_answer.id}", params: { access_token: admin_token.token }, headers: headers
+        end.to change(Answer, :count).by(-1)
       end
     end
   end

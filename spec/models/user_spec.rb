@@ -27,7 +27,7 @@ RSpec.describe User, type: :model do
   describe '.find_for_oauth' do
     let!(:user) { create(:user) }
     let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '12345') }
-    let(:service) { double('FindForOauth') } #mock object
+    let(:service) { double('FindForOauth') } # mock object
 
     it 'call find_for_oauth_service' do
       expect(FindForOauthService).to receive(:new).with(auth).and_return(service)

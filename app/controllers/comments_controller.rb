@@ -37,7 +37,7 @@ class CommentsController < ApplicationController
 
   def publish_comment
     unless @comment.errors.any?
-      ActionCable.server.broadcast "comments-on-question-#{@question.id}-page", {comment: @comment, user: @comment.user}
+      ActionCable.server.broadcast "comments-on-question-#{@question.id}-page", { comment: @comment, user: @comment.user }
     end
   end
 end

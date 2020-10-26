@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'user can add links to question', %q{
+feature 'user can add links to question', "
 in order to provide additional details to my question
 as an author of question
 I'd like to be able to add links
-} do
-
+" do
   given(:user) { create(:user) }
   given(:gist_url) { 'https://gist.github.com/hunter298/0b36c45df3e2a79aed5a178e6cca01ac' }
 
@@ -18,14 +17,14 @@ I'd like to be able to add links
       fill_in 'Body', with: 'New text'
     end
 
-  scenario 'with valid data' do
-    fill_in 'Link name', with: 'My link'
-    fill_in 'Url', with: 'http://google.com/'
+    scenario 'with valid data' do
+      fill_in 'Link name', with: 'My link'
+      fill_in 'Url', with: 'http://google.com/'
 
-    click_on 'Create Question'
+      click_on 'Create Question'
 
-    expect(page).to have_link 'My link', href: 'http://google.com/'
-  end
+      expect(page).to have_link 'My link', href: 'http://google.com/'
+    end
 
     scenario 'with invalid data' do
       fill_in 'Link name', with: 'My link'

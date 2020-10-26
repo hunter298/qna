@@ -7,7 +7,6 @@ class SubscriptionsController < ApplicationController
           @subscription = question.subscriptions.create(user: current_user)
           render json: @subscription.id
         end
-
       end
     end
   end

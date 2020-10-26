@@ -33,10 +33,9 @@
                         method: :patch,
                         remote: true,
                         data: {format: :json}
-        - cache ['rating_for', question] do
-          tr
-            td align="center"
-              h2 class="question-rating-counter" = question.votes.sum(:useful)
+        tr
+          td align="center"
+            h2 class="question-rating-counter" = question.votes.sum(:useful)
         tr
           - unless can? :edit, question
             td

@@ -7,15 +7,15 @@ RSpec.describe ActiveStorage::AttachmentsController, type: :controller do
     let(:answer) { create(:answer, question: question, user: user) }
 
     before do
-      question.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", "w+"), filename: 'test-file.txt')
-      answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", "w+"), filename: 'test-file.txt')
+      question.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", 'w+'), filename: 'test-file.txt')
+      answer.files.attach(io: File.new("#{Rails.root}/tmp/test-file.txt", 'w+'), filename: 'test-file.txt')
     end
 
     context 'author of question tries to delete attached file' do
       before do
         sign_in(user)
 
-        delete :destroy, params: {id: question.files.first.id}, format: :js
+        delete :destroy, params: { id: question.files.first.id }, format: :js
       end
 
       it 'should purge attached file' do
@@ -31,7 +31,7 @@ RSpec.describe ActiveStorage::AttachmentsController, type: :controller do
       before do
         sign_in(user)
 
-        delete :destroy, params: {id: answer.files.first.id}, format: :js
+        delete :destroy, params: { id: answer.files.first.id }, format: :js
       end
 
       it 'should purge attached file' do
@@ -47,7 +47,7 @@ RSpec.describe ActiveStorage::AttachmentsController, type: :controller do
       before do
         sign_in(create(:user))
 
-        delete :destroy, params: {id: question.files.first.id}, format: :js
+        delete :destroy, params: { id: question.files.first.id }, format: :js
       end
 
       it 'should not purge file' do
@@ -59,7 +59,7 @@ RSpec.describe ActiveStorage::AttachmentsController, type: :controller do
       before do
         sign_in(create(:user))
 
-        delete :destroy, params: {id: answer.files.first.id}, format: :js
+        delete :destroy, params: { id: answer.files.first.id }, format: :js
       end
 
       it 'should not purge file' do

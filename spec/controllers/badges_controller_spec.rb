@@ -3,11 +3,13 @@ require 'rails_helper'
 RSpec.describe BadgesController, type: :controller do
   let(:user) { create(:user) }
   let(:questions) { create_list(:question, 3, user: user) }
-  let!(:badges) { user.badges.push(Badge.create([{name: 'first', question: questions[0]},
-                               {name: 'second', question: questions[1]},
-                               {name: 'third', question: questions[2]}]))}
+  let!(:badges) do
+    user.badges.push(Badge.create([{ name: 'first', question: questions[0] },
+                                   { name: 'second', question: questions[1] },
+                                   { name: 'third', question: questions[2] }]))
+  end
 
-  describe "GET#Index" do
+  describe 'GET#Index' do
     before do
       login(user)
       get :index

@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'user can create question', %q{
+feature 'user can create question', "
 In order to get answer from community
 as an authorized user
 i'd like to be able to create a question
-} do
-
+" do
   given(:user) { create(:user) }
 
   context 'Authenticated user' do
@@ -66,7 +65,6 @@ i'd like to be able to create a question
       Capybara.using_session('other_user') do
         expect(page).to have_content 'New question'
       end
-
     end
   end
 

@@ -4,7 +4,7 @@ shared_examples_for 'API editable' do
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
       before do
-        do_request :get, api_path, params: {access_token: access_token.token}, headers: headers
+        do_request :get, api_path, params: { access_token: access_token.token }, headers: headers
       end
 
       it 'returns 200 status' do
@@ -26,7 +26,7 @@ shared_examples_for 'API editable' do
       let(:access_token) { create(:access_token, resource_owner_id: create(:user).id) }
 
       before do
-        do_request :get, api_path, params: {access_token: access_token.token}, headers: headers
+        do_request :get, api_path, params: { access_token: access_token.token }, headers: headers
       end
 
       it 'should return 403 status' do
@@ -38,7 +38,7 @@ shared_examples_for 'API editable' do
       let(:access_token) { create(:access_token, resource_owner_id: create(:user, admin: true).id) }
 
       before do
-        do_request :get, api_path, params: {access_token: access_token.token}, headers: headers
+        do_request :get, api_path, params: { access_token: access_token.token }, headers: headers
       end
 
       it 'returns 200 status' do

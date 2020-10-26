@@ -8,6 +8,6 @@ class CreateAuthorizations < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :authorizations, [:provider, :uid]
+    add_index :authorizations, %i[provider uid]
   end
 end

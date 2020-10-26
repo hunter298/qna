@@ -26,9 +26,7 @@ class AnswersController < ApplicationController
     @answer = Answer.find(params[:id])
     authorize! :best, answer
     @question = @answer.question
-    if current_user&.author_of?(@question)
-      @answer.is_best!
-    end
+    @answer.is_best! if current_user&.author_of?(@question)
   end
 
   private
@@ -47,14 +45,15 @@ class AnswersController < ApplicationController
 
   def answer_params
     if action_name == 'create'
-      params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url])
+      params.require(:answer).permit(:body, files: [], links_attributes: %i[name url])
     else
-      params.require(:answer).permit(:body, links_attributes: [:id, :name, :url, :_destroy])
+      params.require(:answer).permit(:body, links_attributes: %i[id name url _destroy])
     end
   end
 
   def publish_answer
     return if @answer.errors.any?
+
     ActionCable.server.broadcast "answers-for-question-#{question.id}", @answer
   end
 end

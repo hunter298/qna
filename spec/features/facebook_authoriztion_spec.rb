@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-feature 'user can be authorized with facebook', %q{
+feature 'user can be authorized with facebook', '
 in order to simplify sign up procedure
 I, as facebook user
 want to be able to sign up and login with facebook
-} do
+' do
   background do
-    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
-    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
+    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
+    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:facebook]
   end
 
   context 'user does not exist but has facebook account' do

@@ -10,7 +10,7 @@ FactoryBot.define do
     confirmed_at { Time.current }
 
     trait :invalid do
-      email { "invalid_email" }
+      email { 'invalid_email' }
       password { nil }
       password_confirmation { 'incorrect' }
     end
